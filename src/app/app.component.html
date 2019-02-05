@@ -8,7 +8,7 @@
 </form>
 
 <div *ngFor="let application of this.foundApps; index as i;">
-  <h3 (click)="getReviews(application.id)">{{application.trackName}}</h3>
+  <h3 (click)="getReviewStats(application.id)">{{application.trackName}}</h3>
 </div>
 
 <div *ngIf="this.performancePercentage" class="percentages">

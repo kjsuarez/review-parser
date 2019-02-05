@@ -32,4 +32,13 @@ export class AppService {
       })
     )
   }
+
+  getAppStoreReviewStats(id){
+    return this.httpClient.get(BACKEND_URL + 'app-store-api/review-breackdown/' + id)
+    .pipe(
+      map((response: any) => {
+        return response.obj;
+      })
+    )
+  }
 }

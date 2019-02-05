@@ -42,4 +42,13 @@ export class AppComponent {
       this.reviews = response;
     })
   }
+
+  getReviewStats(id){
+    this.appService.getAppStoreReviewStats(id)
+    .subscribe(response => {
+      this.badReviewPercentage = response["badReviewPercentage"]
+      this.performancePercentage = response["performancePercentage"];
+      this.powerPercentage = response["powerPercentage"];
+    })
+  }
 }
