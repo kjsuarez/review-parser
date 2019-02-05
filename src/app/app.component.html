@@ -8,5 +8,15 @@
 </form>
 
 <div *ngFor="let application of this.foundApps; index as i;">
-  <h3>{{application.trackName}}</h3>
+  <h3 (click)="getReviews(application.id)">{{application.trackName}}</h3>
+</div>
+
+<div *ngIf="this.performancePercentage" class="percentages">
+  <div>
+    {{performancePercentage}}% of bad reviews related to performance
+  </div>
+
+  <div>
+    {{powerPercentage}}% of bad reviews related to power
+  </div>
 </div>

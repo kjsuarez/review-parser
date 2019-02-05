@@ -8,6 +8,7 @@ const appStoreApiToucher = require('../api_toucher/app_store_api')
 
 router.get('/reviews/:gameId', function (req, res, next) {
   appStoreApiToucher.getReviewsFor(req.params.gameId).then((result) => {
+    result = appStoreApiToucher.preanReviewResults(result)
     res.status(200).json({
       message: 'success',
       obj: result
@@ -31,6 +32,21 @@ router.get('/itunes-affiliate-serch/:keyword', function (req, res, next) {
       message: 'success',
       obj: result
     });
+  });
+});
+
+router.get('/review-breackdown/:id', function (req, res, next) {
+
+  appStoreApiToucher.getReviewsFor(req.params.id).then((result) => {
+    console.log("result:");
+    console.log(result[0]);
+    result = appStoreApiToucher.preanReviewResults(result)
+
+    breackdown = appStoreApiToucher.reviewBreackdown(result)
+    res.status(200).json({
+      message: 'success',
+      obj: breackdown
+    })
   });
 });
 

@@ -19,7 +19,16 @@ export class AppService {
     return this.httpClient.get(BACKEND_URL + 'app-store-api/itunes-affiliate-serch/' + keyword)
     .pipe(
       map((response: any) => {
-        return response;
+        return response.obj;
+      })
+    )
+  }
+
+  getAppStoreReviews(id){
+    return this.httpClient.get(BACKEND_URL + 'app-store-api/reviews/' + id)
+    .pipe(
+      map((response: any) => {
+        return response.obj;
       })
     )
   }

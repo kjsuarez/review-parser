@@ -12,6 +12,9 @@ export class AppComponent {
   title = 'review-parser';
 
   foundApps = [];
+  reviews = [];
+  performancePercentage = null;
+  powerPercentage = null;
 
   constructor(private appService: AppService) {}
 
@@ -20,10 +23,23 @@ export class AppComponent {
   }
 
   updateSearch(form){
-    this.appService.getAppStoreApps(form.value.searchKeyWord)
+    var keyword = form.value.searchKeyWord.trim()
+    if(keyword){
+      this.appService.getAppStoreApps(keyword)
+      .subscribe(response => {
+        this.foundApps = response;
+      })
+    }else{
+      this.foundApps = []
+    }
+
+  }
+
+  getReviews(id){
+    this.appService.getAppStoreReviews(id)
     .subscribe(response => {
-      console.log(response)
-      this.foundApps = response.obj;
+      console.log(response[0])
+      this.reviews = response;
     })
   }
 }
