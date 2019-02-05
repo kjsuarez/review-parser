@@ -48,7 +48,14 @@ function preanSearchResults(results) {
   return results
 }
 
+function narrowResult(keyword, results) {
+
+  results = results.filter(result => result.trackName.toLowerCase().includes(keyword.toLowerCase()))
+  return results
+}
+
 module.exports = {
   getReviewsFor: getReviewsFor,
-  preanSearchResults: preanSearchResults
+  preanSearchResults: preanSearchResults,
+  narrowResult: narrowResult
 };
