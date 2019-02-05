@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Http, Response, Headers } from '@angular/http';
 import { Injectable, EventEmitter } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
@@ -15,8 +15,10 @@ export class AppService {
   constructor(private http: Http, private httpClient: HttpClient){}
 
   getAppStoreApps(keyword){
+    let params = new HttpParams();
+    params = params.append('keyword', keyword);
     console.log("url: " + BACKEND_URL + 'app-store-api/itunes-affiliate-serch/' + keyword)
-    return this.httpClient.get(BACKEND_URL + 'app-store-api/itunes-affiliate-serch/' + keyword)
+    return this.httpClient.get(BACKEND_URL + 'app-store-api/itunes-affiliate-serch/' + keyword, { params })
     .pipe(
       map((response: any) => {
         return response.obj;

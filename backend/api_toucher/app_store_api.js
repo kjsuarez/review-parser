@@ -55,7 +55,6 @@ function reviewBreackdown(result) {
     performancePercentage: xPercentOfy(performance_related_reviews, bad_reviews)
   }
 
-  console.log(breakdown)
   return breakdown
 
 }

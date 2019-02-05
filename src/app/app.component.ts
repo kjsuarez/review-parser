@@ -15,6 +15,7 @@ export class AppComponent {
   reviews = [];
   performancePercentage = null;
   powerPercentage = null;
+  badReviewPercentage = null;
 
   constructor(private appService: AppService) {}
 

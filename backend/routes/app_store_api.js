@@ -24,7 +24,7 @@ router.get('/itunes-affiliate-serch/:keyword', function (req, res, next) {
   		limit: 10
   	}
   };
-
+  console.log(req.query);
   itunesSearchApi(req.params.keyword, opts).then(result => {
     result = appStoreApiToucher.preanSearchResults(result)
     result = appStoreApiToucher.narrowResult(req.params.keyword, result)
@@ -38,8 +38,6 @@ router.get('/itunes-affiliate-serch/:keyword', function (req, res, next) {
 router.get('/review-breackdown/:id', function (req, res, next) {
 
   appStoreApiToucher.getReviewsFor(req.params.id).then((result) => {
-    console.log("result:");
-    console.log(result[0]);
     result = appStoreApiToucher.preanReviewResults(result)
 
     breackdown = appStoreApiToucher.reviewBreackdown(result)
