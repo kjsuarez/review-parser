@@ -26,6 +26,18 @@ export class AppService {
     )
   }
 
+  getPlayStoreApps(keyword){
+    let params = new HttpParams();
+    params = params.append('keyword', keyword);
+    console.log("url: " + BACKEND_URL + 'play-store-api/play-store-search/' + keyword)
+    return this.httpClient.get(BACKEND_URL + 'play-store-api/play-store-search/' + keyword, { params })
+    .pipe(
+      map((response: any) => {
+        return response.obj;
+      })
+    )
+  }
+
   getAppStoreReviews(id){
     return this.httpClient.get(BACKEND_URL + 'app-store-api/reviews/' + id)
     .pipe(

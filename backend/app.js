@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 
 const appStoreRoutes = require('./routes/app_store_api');
+const playStoreRoutes = require('./routes/play_store_api');
 
 const app = express();
 
@@ -24,5 +25,6 @@ app.use((req, res, next) => {
 });
 
 app.use('/app-store-api', appStoreRoutes);
+app.use('/play-store-api', playStoreRoutes);
 
 module.exports = app;

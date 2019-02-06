@@ -43,7 +43,10 @@ export class AppComponent {
           this.foundApps = response;
         })
       }else{
-        this.foundApps = [{trackName: "poop"},{trackName: "poop"},{trackName: "poop"},{trackName: "poop"},{trackName: "poop"}]
+        this.appService.getPlayStoreApps(keyword)
+        .subscribe(response => {
+          this.foundApps = response;
+        })
       }
 
     }else{

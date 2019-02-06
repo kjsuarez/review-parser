@@ -5,7 +5,9 @@
 }
 
 .toggle-div{
-
+  font-size: 160%;
+  margin-top: 2em;
+  margin-inline-start: 1em;
 }
 
 .search-form {
