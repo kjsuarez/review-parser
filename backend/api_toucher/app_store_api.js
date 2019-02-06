@@ -40,47 +40,6 @@ function getPageOfReviews(id, page) {
   });
 }
 
-function reviewBreackdown(result) {
-
-  bad_reviews = badReviews(result)
-
-  power_related_reviews = filterReviewsByKeywordSet(bad_reviews, ["I", "power", "battery"])
-  performance_related_reviews = filterReviewsByKeywordSet(bad_reviews, ["the", "performance"])
-  var breakdown = {
-    badReviewCount: bad_reviews.length,
-    badReviewPercentage: xPercentOfy(bad_reviews, result),
-    powerCount: power_related_reviews.length,
-    powerPercentage: xPercentOfy(power_related_reviews, bad_reviews),
-    performanceCount: performance_related_reviews.length,
-    performancePercentage: xPercentOfy(performance_related_reviews, bad_reviews)
-  }
-
-  return breakdown
-
-}
-
-function badReviews(result){
-  return result.filter(review => parseInt(review["rating"]) < 4)
-}
-
-function xPercentOfy(x, y) {
-  return parseInt((x.length/y.length)*100)
-}
-
-function filterReviewsByKeywordSet(reviews, keywords){
-  return reviews.filter(review =>  containsAtLeastOneOf(review["content"], keywords) )
-}
-
-function containsAtLeastOneOf(str, arry) {
-  pass = false
-  arry.forEach(function(element) {
-    if (str.toLowerCase().includes(element.toLowerCase())) {
-      pass = true
-    }
-  });
-  return pass
-}
-
 function preanSearchResults(results) {
   results = results.body.results
   results = results.map(result => {
@@ -107,6 +66,5 @@ module.exports = {
   getReviewsFor: getReviewsFor,
   preanSearchResults: preanSearchResults,
   narrowResult: narrowResult,
-  preanReviewResults: preanReviewResults,
-  reviewBreackdown: reviewBreackdown
+  preanReviewResults: preanReviewResults
 };

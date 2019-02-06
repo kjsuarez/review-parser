@@ -4,6 +4,7 @@ var request = require('request');
 var gplay = require('google-play-scraper');
 
 var playStoreApiToucher = require('../api_toucher/play_store_api')
+var resultFilter = require('../filters/review_filters')
 
 router.get('/play-store-search/:keyword', function (req, res, next) {
 
@@ -39,7 +40,7 @@ router.get('/review-breackdown/:id', function (req, res, next) {
   playStoreApiToucher.getReviewsFor(req.params.id).then((result) => {
     result = playStoreApiToucher.preanReviewResults(result)
 
-    breackdown = playStoreApiToucher.reviewBreackdown(result)
+    breackdown = resultFilter.reviewBreackdown(result)
     res.status(200).json({
       message: 'success',
       obj: breackdown

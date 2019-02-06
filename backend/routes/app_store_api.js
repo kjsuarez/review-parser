@@ -5,6 +5,7 @@ var itunesSearchApi = require('itunes-search-api');
 var appScraper = require('app-store-scraper');
 
 const appStoreApiToucher = require('../api_toucher/app_store_api')
+var resultFilter = require('../filters/review_filters')
 
 router.get('/reviews/:gameId', function (req, res, next) {
   appStoreApiToucher.getReviewsFor(req.params.gameId).then((result) => {
@@ -44,7 +45,7 @@ router.get('/review-breackdown/:id', function (req, res, next) {
   appStoreApiToucher.getReviewsFor(req.params.id).then((result) => {
     result = appStoreApiToucher.preanReviewResults(result)
 
-    breackdown = appStoreApiToucher.reviewBreackdown(result)
+    breackdown = resultFilter.reviewBreackdown(result)
     res.status(200).json({
       message: 'success',
       obj: breackdown
