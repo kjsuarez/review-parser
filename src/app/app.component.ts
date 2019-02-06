@@ -16,7 +16,8 @@ export class AppComponent {
   performancePercentage = null;
   powerPercentage = null;
   badReviewPercentage = null;
-  thinking = false
+  thinking = false;
+  searchContext = "appStore";
 
   constructor(private appService: AppService) {}
 
@@ -24,13 +25,27 @@ export class AppComponent {
 
   }
 
+  onChange(value){
+    this.foundApps = []
+    if(value.checked === true){
+      this.searchContext = "playStore"
+    }else{
+      this.searchContext = "appStore"
+    }
+  }
+
   updateSearch(form){
     var keyword = form.value.searchKeyWord.trim()
     if(keyword){
-      this.appService.getAppStoreApps(keyword)
-      .subscribe(response => {
-        this.foundApps = response;
-      })
+      if(this.searchContext == "appStore"){
+        this.appService.getAppStoreApps(keyword)
+        .subscribe(response => {
+          this.foundApps = response;
+        })
+      }else{
+        this.foundApps = [{trackName: "poop"},{trackName: "poop"},{trackName: "poop"},{trackName: "poop"},{trackName: "poop"}]
+      }
+
     }else{
       this.foundApps = []
     }

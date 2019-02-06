@@ -1,34 +1,40 @@
-<form #keywordSearch="ngForm" ngNativeValidate class="search-form">
+<div class="container">
+  <form #keywordSearch="ngForm" ngNativeValidate class="search-form">
+    <mat-form-field class="search-input">
+      <input
+        matInput
+        placeholder="app search"
+        type="text"
+        [ngModel]="searchKeyWord"
+        (keyup)="updateSearch(keywordSearch)"
+        name="searchKeyWord"
+        [matAutocomplete]="auto">
 
-  <mat-form-field class="search-input">
-    <input
-      matInput
-      placeholder="app search"
-      type="text"
-      [ngModel]="searchKeyWord"
-      (keyup)="updateSearch(keywordSearch)"
-      name="searchKeyWord"
-      [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let application of this.foundApps" [value]="option" (click)="this.searchKeyWord = application.trackName; getReviewStats(application.id)">
+            {{application.trackName}}
+          </mat-option>
+        </mat-autocomplete>
 
-      <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let application of this.foundApps" [value]="option" (click)="this.searchKeyWord = application.trackName; getReviewStats(application.id)">
-          {{application.trackName}}
-        </mat-option>
-      </mat-autocomplete>
+    </mat-form-field>
 
-  </mat-form-field>
+    <mat-spinner *ngIf="this.thinking"></mat-spinner>
 
-  <mat-spinner *ngIf="this.thinking"></mat-spinner>
-
-  <div *ngIf="this.performancePercentage" class="percentages">
-    <div class="percentage-column">
-      <h2>Bad reviews related <br> to power</h2>
-      <h2 class="big-number">{{powerPercentage}}%</h2>
+    <div *ngIf="this.performancePercentage" class="percentages">
+      <div class="percentage-column">
+        <h2>Bad reviews related <br> to power</h2>
+        <h2 class="big-number">{{powerPercentage}}%</h2>
+      </div>
+      <div class="percentage-column">
+          <h2>Bad reviews related <br> to performance</h2>
+          <h2 class="big-number">{{performancePercentage}}%</h2>
+      </div>
     </div>
-    <div class="percentage-column">
-        <h2>Bad reviews related <br> to performance</h2>
-        <h2 class="big-number">{{performancePercentage}}%</h2>
-    </div>
+
+  </form>
+
+  <div class="toggle-div">
+    app store <mat-slide-toggle (change)="onChange($event)"></mat-slide-toggle> play store
   </div>
 
-</form>
+</div>
