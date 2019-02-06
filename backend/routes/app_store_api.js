@@ -16,7 +16,7 @@ router.get('/reviews/:gameId', function (req, res, next) {
   });
 });
 
-router.get('/itunes-affiliate-serch/:keyword', function (req, res, next) {
+router.get('/itunes-affiliate-search/:keyword', function (req, res, next) {
 
   const opts = {
   	query: {

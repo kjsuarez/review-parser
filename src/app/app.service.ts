@@ -17,8 +17,8 @@ export class AppService {
   getAppStoreApps(keyword){
     let params = new HttpParams();
     params = params.append('keyword', keyword);
-    console.log("url: " + BACKEND_URL + 'app-store-api/itunes-affiliate-serch/' + keyword)
-    return this.httpClient.get(BACKEND_URL + 'app-store-api/itunes-affiliate-serch/' + keyword, { params })
+    console.log("url: " + BACKEND_URL + 'app-store-api/itunes-affiliate-search/' + keyword)
+    return this.httpClient.get(BACKEND_URL + 'app-store-api/itunes-affiliate-search/' + keyword, { params })
     .pipe(
       map((response: any) => {
         return response.obj;
