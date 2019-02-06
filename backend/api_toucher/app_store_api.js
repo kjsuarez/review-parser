@@ -84,7 +84,7 @@ function containsAtLeastOneOf(str, arry) {
 function preanSearchResults(results) {
   results = results.body.results
   results = results.map(result => {
-    return {id: result.trackId, trackName: result.trackName, artistName: result.artistName}
+    return {id: result.trackId, name: result.trackName, developer: result.artistName}
   })
   return results
 }
@@ -97,7 +97,7 @@ function preanReviewResults(results) {
 }
 
 function narrowResult(keyword, results) {
-  results = results.filter(result => result.trackName.toLowerCase().includes(keyword.toLowerCase()))
+  results = results.filter(result => result.name.toLowerCase().includes(keyword.toLowerCase()))
   return results
 }
 

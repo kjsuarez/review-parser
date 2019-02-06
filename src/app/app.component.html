@@ -11,8 +11,8 @@
         [matAutocomplete]="auto">
 
         <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let application of this.foundApps" [value]="option" (click)="this.searchKeyWord = application.trackName; getReviewStats(application.id)">
-            {{application.trackName}}
+          <mat-option *ngFor="let application of this.foundApps" [value]="option" (click)="this.searchKeyWord = application.name; getReviewStats(application.id)">
+            {{application.name}}
           </mat-option>
         </mat-autocomplete>
 
