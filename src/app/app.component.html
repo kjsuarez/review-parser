@@ -1,22 +1,29 @@
-<form #keywordSearch="ngForm" ngNativeValidate>
-  <input
-    placeholder="app name"
-    type="text"
-    [ngModel]="searchKeyWord"
-    (keyup)="updateSearch(keywordSearch)"
-    name="searchKeyWord">
+<form #keywordSearch="ngForm" ngNativeValidate class="search-form">
+
+    <mat-form-field class="search-input">
+      <input
+
+        matInput
+        placeholder="app search"
+        type="text"
+        [ngModel]="searchKeyWord"
+        (keyup)="updateSearch(keywordSearch)"
+        name="searchKeyWord">
+    </mat-form-field>
+
+  <div class="search-result" *ngFor="let application of this.foundApps; index as i;">
+    <h3 (click)="getReviewStats(application.id)">{{application.trackName}}</h3>
+  </div>
+
+  <div *ngIf="this.performancePercentage" class="percentages">
+    <div class="percentage-column">
+      <h2>Bad reviews related <br> to power</h2>
+      <h2 class="big-number">{{powerPercentage}}%</h2>
+    </div>
+    <div class="percentage-column">
+        <h2>Bad reviews related <br> to performance</h2>
+        <h2 class="big-number">{{performancePercentage}}%</h2>
+    </div>
+  </div>
+
 </form>
-
-<div *ngFor="let application of this.foundApps; index as i;">
-  <h3 (click)="getReviewStats(application.id)">{{application.trackName}}</h3>
-</div>
-
-<div *ngIf="this.performancePercentage" class="percentages">
-  <div>
-    {{performancePercentage}}% of bad reviews related to performance
-  </div>
-
-  <div>
-    {{powerPercentage}}% of bad reviews related to power
-  </div>
-</div>
