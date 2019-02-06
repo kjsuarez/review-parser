@@ -13,6 +13,8 @@ router.get('/reviews/:gameId', function (req, res, next) {
       message: 'success',
       obj: result
     })
+  }).catch(error => {
+    console.log(error);
   });
 });
 
@@ -32,6 +34,8 @@ router.get('/itunes-affiliate-search/:keyword', function (req, res, next) {
       message: 'success',
       obj: result
     });
+  }).catch(error => {
+    console.log(error);
   });
 });
 
@@ -45,6 +49,8 @@ router.get('/review-breackdown/:id', function (req, res, next) {
       message: 'success',
       obj: breackdown
     })
+  }).catch(error => {
+    console.log(error);
   });
 });
 

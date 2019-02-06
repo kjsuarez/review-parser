@@ -17,31 +17,35 @@ router.get('/play-store-search/:keyword', function (req, res, next) {
       message: 'success',
       obj: result
     })
-    }).catch(error => {
-      console.log(error);
+  }).catch(error => {
+    console.log(error);
   });
 });
 
 router.get('/reviews/:gameId', function (req, res, next) {
   playStoreApiToucher.getReviewsFor(req.params.gameId).then((result) => {
-    //result = playStoreApiToucher.preanReviewResults(result)
+    result = playStoreApiToucher.preanReviewResults(result)
     res.status(200).json({
       message: 'success',
       obj: result
     })
+  }).catch(error => {
+    console.log(error);
   });
 });
 
 router.get('/review-breackdown/:id', function (req, res, next) {
 
   playStoreApiToucher.getReviewsFor(req.params.id).then((result) => {
-    result = appStoreApiToucher.preanReviewResults(result)
+    result = playStoreApiToucher.preanReviewResults(result)
 
     breackdown = playStoreApiToucher.reviewBreackdown(result)
     res.status(200).json({
       message: 'success',
       obj: breackdown
     })
+  }).catch(error => {
+    console.log(error);
   });
 });
 

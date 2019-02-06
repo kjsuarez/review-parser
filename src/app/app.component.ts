@@ -26,7 +26,10 @@ export class AppComponent {
   }
 
   onChange(value){
-    this.foundApps = []
+    this.foundApps = [];
+    this.performancePercentage = null;
+    this.powerPercentage = null;
+    this.badReviewPercentage = null;
     if(value.checked === true){
       this.searchContext = "playStore"
     }else{
