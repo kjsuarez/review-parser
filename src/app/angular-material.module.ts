@@ -4,6 +4,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {
   MatInputModule,
   MatCardModule,
@@ -33,6 +34,7 @@ import {
     MatDividerModule,
     MatProgressBarModule,
     MatCheckboxModule,
+    MatAutocompleteModule,
     MatListModule
   ]
 })

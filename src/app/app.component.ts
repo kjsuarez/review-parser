@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from "@angular/forms";
+import { NgForm, FormControl } from "@angular/forms";
 import { Subscription } from 'rxjs';
 import { AppService } from './app.service';
 
@@ -16,6 +16,7 @@ export class AppComponent {
   performancePercentage = null;
   powerPercentage = null;
   badReviewPercentage = null;
+  thinking = false
 
   constructor(private appService: AppService) {}
 
@@ -45,11 +46,16 @@ export class AppComponent {
   }
 
   getReviewStats(id){
+    this.badReviewPercentage = null;
+    this.performancePercentage = null;
+    this.powerPercentage = null;
+    this.thinking = true;
     this.appService.getAppStoreReviewStats(id)
     .subscribe(response => {
       this.badReviewPercentage = response["badReviewPercentage"]
       this.performancePercentage = response["performancePercentage"];
       this.powerPercentage = response["powerPercentage"];
+      this.thinking = false;
     })
   }
 }
