@@ -12,7 +12,6 @@ router.get('/play-store-search/:keyword', function (req, res, next) {
     num: 10
   }).then(result => {
     result = playStoreApiToucher.preanSearchResults(result)
-    // result = playStoreApiToucher.narrowResult(req.params.keyword, result)
 
     res.status(200).json({
       message: 'success',
@@ -21,8 +20,29 @@ router.get('/play-store-search/:keyword', function (req, res, next) {
     }).catch(error => {
       console.log(error);
   });
+});
 
+router.get('/reviews/:gameId', function (req, res, next) {
+  playStoreApiToucher.getReviewsFor(req.params.gameId).then((result) => {
+    //result = playStoreApiToucher.preanReviewResults(result)
+    res.status(200).json({
+      message: 'success',
+      obj: result
+    })
+  });
+});
 
+router.get('/review-breackdown/:id', function (req, res, next) {
+
+  playStoreApiToucher.getReviewsFor(req.params.id).then((result) => {
+    result = appStoreApiToucher.preanReviewResults(result)
+
+    breackdown = playStoreApiToucher.reviewBreackdown(result)
+    res.status(200).json({
+      message: 'success',
+      obj: breackdown
+    })
+  });
 });
 
 

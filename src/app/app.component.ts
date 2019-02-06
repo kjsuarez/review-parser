@@ -68,12 +68,22 @@ export class AppComponent {
     this.performancePercentage = null;
     this.powerPercentage = null;
     this.thinking = true;
-    this.appService.getAppStoreReviewStats(id)
-    .subscribe(response => {
-      this.badReviewPercentage = response["badReviewPercentage"]
-      this.performancePercentage = response["performancePercentage"];
-      this.powerPercentage = response["powerPercentage"];
-      this.thinking = false;
-    })
+    if(this.searchContext == "appStore"){
+      this.appService.getAppStoreReviewStats(id)
+      .subscribe(response => {
+        this.badReviewPercentage = response["badReviewPercentage"]
+        this.performancePercentage = response["performancePercentage"];
+        this.powerPercentage = response["powerPercentage"];
+        this.thinking = false;
+      })
+    }else{
+      this.appService.getPlayStoreReviewStats(id)
+      .subscribe(response => {
+        this.badReviewPercentage = response["badReviewPercentage"]
+        this.performancePercentage = response["performancePercentage"];
+        this.powerPercentage = response["powerPercentage"];
+        this.thinking = false;
+      })
+    }
   }
 }

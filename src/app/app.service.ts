@@ -55,4 +55,13 @@ export class AppService {
       })
     )
   }
+
+  getPlayStoreReviewStats(id){
+    return this.httpClient.get(BACKEND_URL + 'play-store-api/review-breackdown/' + id)
+    .pipe(
+      map((response: any) => {
+        return response.obj;
+      })
+    )
+  }
 }
