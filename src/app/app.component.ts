@@ -18,6 +18,7 @@ export class AppComponent {
   badReviewPercentage = null;
   thinking = false;
   searchContext = "appStore";
+  breakdown;
 
   constructor(private appService: AppService) {}
 
@@ -74,6 +75,7 @@ export class AppComponent {
     if(this.searchContext == "appStore"){
       this.appService.getAppStoreReviewStats(id)
       .subscribe(response => {
+        console.log(response)
         this.badReviewPercentage = response["badReviewPercentage"]
         this.performancePercentage = response["performancePercentage"];
         this.powerPercentage = response["powerPercentage"];
@@ -82,11 +84,13 @@ export class AppComponent {
     }else{
       this.appService.getPlayStoreReviewStats(id)
       .subscribe(response => {
+        console.log(response)
         this.badReviewPercentage = response["badReviewPercentage"]
         this.performancePercentage = response["performancePercentage"];
         this.powerPercentage = response["powerPercentage"];
         this.thinking = false;
       })
     }
+
   }
 }

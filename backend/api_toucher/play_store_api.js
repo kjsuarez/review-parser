@@ -50,7 +50,7 @@ function getPageOfReviews(id, page) {
   return gplay.reviews({
     appId: id,
     page: page,
-    sort: gplay.sort.HELPFULNESS
+    sort: gplay.sort.NEWEST
   });
 }
 
