@@ -26,6 +26,10 @@ export class AppService {
     )
   }
 
+  mockAppStoreApps(id){
+    return [{id: 1, name: "meep"},{id: 2, name: "morp"},{id: 3, name: "meepmorp"},{id: 4, name: "sheepshmorp"}]
+  }
+
   getPlayStoreApps(keyword){
     let params = new HttpParams();
     params = params.append('keyword', keyword);
@@ -54,6 +58,17 @@ export class AppService {
         return response.obj;
       })
     )
+  }
+
+  mockAppStoreReviewStats(id){
+    return {
+      badReviewCount: 100,
+      badReviewPercentage: 30,
+      powerCount: 10,
+      powerPercentage: 10,
+      performanceCount: 20,
+      performancePercentage: 20
+    }
   }
 
   getPlayStoreReviewStats(id){

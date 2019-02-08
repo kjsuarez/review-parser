@@ -44,14 +44,21 @@ export class AppComponent {
     }
   }
 
+  setKeyWord(name){
+    this.searchKeyWord = name
+    console.log("the keyword is: " + this.searchKeyWord)
+  }
+
   updateSearch(form){
     var keyword = form.value.searchKeyWord.trim()
     if(keyword){
       if(this.searchContext == "appStore"){
-        this.appService.getAppStoreApps(keyword)
-        .subscribe(response => {
-          this.foundApps = response;
-        })
+        // this.appService.getAppStoreApps(keyword)
+        // .subscribe(response => {
+        //   this.foundApps = response;
+        // })
+        //*****//
+        this.foundApps = this.appService.mockAppStoreApps(keyword)
       }else{
         this.appService.getPlayStoreApps(keyword)
         .subscribe(response => {
@@ -79,14 +86,20 @@ export class AppComponent {
     this.powerPercentage = null;
     this.thinking = true;
     if(this.searchContext == "appStore"){
-      this.appService.getAppStoreReviewStats(id)
-      .subscribe(response => {
-        console.log(response)
-        this.badReviewPercentage = response["badReviewPercentage"]
-        this.performancePercentage = response["performancePercentage"];
-        this.powerPercentage = response["powerPercentage"];
-        this.thinking = false;
-      })
+      // this.appService.getAppStoreReviewStats(id)
+      // .subscribe(response => {
+      //   console.log(response)
+      //   this.badReviewPercentage = response["badReviewPercentage"]
+      //   this.performancePercentage = response["performancePercentage"];
+      //   this.powerPercentage = response["powerPercentage"];
+      //   this.thinking = false;
+      // })
+      //********//
+      var response = this.appService.mockAppStoreReviewStats(id)
+      this.badReviewPercentage = response["badReviewPercentage"]
+      this.performancePercentage = response["performancePercentage"];
+      this.powerPercentage = response["powerPercentage"];
+      this.thinking = false;
     }else{
       this.appService.getPlayStoreReviewStats(id)
       .subscribe(response => {

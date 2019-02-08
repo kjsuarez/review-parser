@@ -5,13 +5,13 @@
         matInput
         placeholder="app search"
         type="text"
-        [ngModel]="searchKeyWord"
+        [(ngModel)]="searchKeyWord"
         (keyup)="updateSearch(keywordSearch)"
         name="searchKeyWord"
         [matAutocomplete]="auto">
 
         <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let application of this.foundApps" [value]="option" (click)="this.searchKeyWord = application.name; getReviewStats(application.id)">
+          <mat-option *ngFor="let application of this.foundApps" [value]="option" (click)="setKeyWord(application.name); getReviewStats(application.id)">
             {{application.name}}
           </mat-option>
         </mat-autocomplete>
