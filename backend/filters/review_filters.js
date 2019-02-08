@@ -61,9 +61,6 @@ function reviewBreackdown(result) {
 
   bad_reviews = badReviews(result)
 
-  console.log("bad reviews:");
-  console.log(bad_reviews);
-
   power_related_reviews = filterReviewsByKeywordSet(bad_reviews, power_dictionary)
   performance_related_reviews = filterReviewsByKeywordSet(bad_reviews, performance_dictionary)
 
