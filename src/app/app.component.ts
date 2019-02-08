@@ -13,11 +13,12 @@ export class AppComponent {
 
   foundApps = [];
   reviews = [];
-  performancePercentage = null;
-  powerPercentage = null;
-  badReviewPercentage = null;
+  performancePercentage;
+  powerPercentage;
+  badReviewPercentage;
   thinking = false;
   searchContext = "appStore";
+  searchKeyWord;
   breakdown;
 
   constructor(private appService: AppService) {}
@@ -26,11 +27,16 @@ export class AppComponent {
 
   }
 
-  onChange(value){
+  cleanSlate(){
     this.foundApps = [];
     this.performancePercentage = null;
     this.powerPercentage = null;
     this.badReviewPercentage = null;
+    this.searchKeyWord = null;
+  }
+
+  onChange(value){
+    this.cleanSlate();
     if(value.checked === true){
       this.searchContext = "playStore"
     }else{
