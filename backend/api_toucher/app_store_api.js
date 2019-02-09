@@ -8,26 +8,25 @@ function getReviewsFor(id) {
   return new Promise(function(resolve, reject) {
     var out_of_reviews = false
     var output = []
-    var count = 0;
 
-    async.whilst(
-        function() { return count < 10 && !out_of_reviews; },
-        function(callback) {
-          count++;
-          getPageOfReviews(id, count).then((result) => {
-            data = JSON.parse(result)
-            if (data["feed"]["entry"]) {
-              output = output.concat(data["feed"]["entry"])
-            }else{
-              out_of_reviews = true;
-            }
-            callback(null, count);
-          });
-        },
-        function (err, n) {
-            resolve(output)
+    async.times(10, function(count, callback) {
+      getPageOfReviews(id, count + 1).then((result) => {
+        data = JSON.parse(result)
+        if (data["feed"]["entry"]) {
+          output = output.concat(data["feed"]["entry"])
+        }else{
+          out_of_reviews = true;
         }
-    );
+        callback(null, count);
+      });
+    }, function(err, users) {
+      if (err) {
+        console.log(err);
+        resolve([])
+      }else {
+        resolve(output)
+      }
+    });
   });
 }
 

@@ -26,24 +26,35 @@ function getReviewsFor(id) {
     var output = []
     var count = 0;
 
-    async.whilst(
-        function() { return output.length < 500 && !out_of_reviews; },
-        function(callback) {
-          getPageOfReviews(id, count).then((result) => {
-            if (result.length > 0) {
-              output = output.concat(result)
-            }else{
-              out_of_reviews = true;
-            }
-            callback(null, count);
-          });
-          count++;
-        },
-        function (err, n) {
-          resolve(output)
+    async.times(13, function(count, callback) {
+      getPageOfReviews(id, count + 1).then((result) => {
+        if (result.length > 0) {
+          output = output.concat(result)
+        }else{
+          out_of_reviews = true;
         }
-    );
+        callback(null, count);
+      });
+    }, function(err, users) {
+      if (err) {
+        console.log(err);
+        resolve([])
+      }else {
+        resolve(output)
+      }
+    });
   });
+}
+
+function blankReviewStats() {
+  return {
+    badReviewCount: bad_reviews.length,
+    badReviewPercentage: 0,
+    powerCount: 0,
+    powerPercentage: 0,
+    performanceCount: 0,
+    performancePercentage: 0
+  }
 }
 
 function getPageOfReviews(id, page) {
