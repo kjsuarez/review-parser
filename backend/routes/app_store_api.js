@@ -41,8 +41,8 @@ router.get('/itunes-affiliate-search/:keyword', function (req, res, next) {
 });
 
 router.get('/review-breackdown/:id', function (req, res, next) {
-
-  appStoreApiToucher.getReviewsFor(req.params.id).then((result) => {
+  console.log("region: " + req.query.region);
+  appStoreApiToucher.getReviewsFor(req.params.id, req.query.region).then((result) => {
     result = appStoreApiToucher.preanReviewResults(result)
 
     breackdown = resultFilter.reviewBreackdown(result)

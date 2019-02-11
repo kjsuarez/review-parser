@@ -7,9 +7,10 @@ var playStoreApiToucher = require('../api_toucher/play_store_api')
 var resultFilter = require('../filters/review_filters')
 
 router.get('/play-store-search/:keyword', function (req, res, next) {
-
+  console.log("query string: " + req.query.region);
   gplay.search({
     term: req.params.keyword,
+    country: req.query.region,
     num: 10
   }).then(result => {
     result = playStoreApiToucher.preanSearchResults(result)

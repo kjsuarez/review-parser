@@ -30,10 +30,10 @@ export class AppService {
     return [{id: 1, name: "meep"},{id: 2, name: "morp"},{id: 3, name: "meepmorp"},{id: 4, name: "sheepshmorp"}]
   }
 
-  getPlayStoreApps(keyword){
+  getPlayStoreApps(keyword, region = 'us'){
     let params = new HttpParams();
-    params = params.append('keyword', keyword);
-    console.log("url: " + BACKEND_URL + 'play-store-api/play-store-search/' + keyword)
+    params = params.append('region', region);
+    console.log("region: " + region)
     return this.httpClient.get(BACKEND_URL + 'play-store-api/play-store-search/' + keyword, { params })
     .pipe(
       map((response: any) => {
@@ -42,8 +42,10 @@ export class AppService {
     )
   }
 
-  getAppStoreReviews(id){
-    return this.httpClient.get(BACKEND_URL + 'app-store-api/reviews/' + id)
+  getAppStoreReviews(id, region = 'us'){
+    let params = new HttpParams();
+    params = params.append('region', region)
+    return this.httpClient.get(BACKEND_URL + 'app-store-api/reviews/' + id, { params })
     .pipe(
       map((response: any) => {
         return response.obj;
@@ -51,8 +53,10 @@ export class AppService {
     )
   }
 
-  getAppStoreReviewStats(id){
-    return this.httpClient.get(BACKEND_URL + 'app-store-api/review-breackdown/' + id)
+  getAppStoreReviewStats(id, region = 'us'){
+    let params = new HttpParams();
+    params = params.append('region', region)
+    return this.httpClient.get(BACKEND_URL + 'app-store-api/review-breackdown/' + id, { params })
     .pipe(
       map((response: any) => {
         return response.obj;

@@ -4,13 +4,13 @@ var express = require('express');
 const fs = require('fs');
 var async = require('async');
 
-function getReviewsFor(id) {
+function getReviewsFor(id, region='us') {
   return new Promise(function(resolve, reject) {
     var out_of_reviews = false
     var output = []
 
     async.times(10, function(count, callback) {
-      getPageOfReviews(id, count + 1).then((result) => {
+      getPageOfReviews(id, region, count + 1).then((result) => {
         data = JSON.parse(result)
         if (data["feed"]["entry"]) {
           output = output.concat(data["feed"]["entry"])
@@ -31,9 +31,9 @@ function getReviewsFor(id) {
 }
 
 
-function getPageOfReviews(id, page) {
+function getPageOfReviews(id, region = 'us', page) {
   return request({ // 840784742, yelp: 284910350
-    uri: 'https://itunes.apple.com/us/rss/customerreviews/page='+ page +'/id='+ id +'/sortby=mostrecent/json',
+    uri: 'https://itunes.apple.com/'+ region +'/rss/customerreviews/page='+ page +'/id='+ id +'/sortby=mostrecent/json',
     qs: {
     }
   });

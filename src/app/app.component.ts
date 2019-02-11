@@ -20,6 +20,17 @@ export class AppComponent {
   searchContext = "appStore";
   searchKeyWord;
   breakdown;
+  appStoreRegions = [
+    {code: "us", country: "US"},
+    {code: "cn", country: "China"},
+    {code: "gb", country: "UK"},
+    {code: "kr", country: "South Korea"},
+    {code: "fr", country: "France"},
+    {code: "in", country: "India"},
+    {code: "ru", country: "Russia"}
+  ];
+  selectedRegion = 'us';
+  selectedLanguage = 'en';
 
   constructor(private appService: AppService) {}
 
@@ -60,7 +71,7 @@ export class AppComponent {
         //*****//
         // this.foundApps = this.appService.mockAppStoreApps(keyword)
       }else{
-        this.appService.getPlayStoreApps(keyword)
+        this.appService.getPlayStoreApps(keyword, this.selectedRegion)
         .subscribe(response => {
           this.foundApps = response;
         })
@@ -72,15 +83,16 @@ export class AppComponent {
 
   }
 
-  getReviews(id){
-    this.appService.getAppStoreReviews(id)
+  getReviews(id, region){
+    this.appService.getAppStoreReviews(id, region)
     .subscribe(response => {
       console.log(response[0])
       this.reviews = response;
     })
   }
 
-  getReviewStats(id){
+  getReviewStats(id, region){
+    console.log("region: " + region)
     this.badReviewPercentage = null;
     this.performancePercentage = null;
     this.powerPercentage = null;

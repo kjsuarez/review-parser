@@ -11,7 +11,7 @@
         [matAutocomplete]="auto">
 
         <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let application of this.foundApps" [value]="option" (click)="setKeyWord(application.name); getReviewStats(application.id)">
+          <mat-option *ngFor="let application of this.foundApps" [value]="option" (click)="setKeyWord(application.name); getReviewStats(application.id, selectedRegion)">
             {{application.name}}
           </mat-option>
         </mat-autocomplete>
@@ -31,10 +31,22 @@
       </div>
     </div>
 
+    <mat-form-field>
+      <mat-select placeholder="region" [(ngModel)]="selectedRegion" name="region">
+        <mat-option *ngFor="let region of appStoreRegions" [value]="region.code">
+          {{region.country}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
   </form>
 
+<div class="second-column">
   <div class="toggle-div">
     app store <mat-slide-toggle (change)="onChange($event)"></mat-slide-toggle> play store
   </div>
+
+
+</div>
 
 </div>

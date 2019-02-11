@@ -6,6 +6,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatSelectModule} from '@angular/material/select';
 import {
   MatInputModule,
   MatCardModule,
@@ -37,6 +38,7 @@ import {
     MatCheckboxModule,
     MatAutocompleteModule,
     MatSlideToggleModule,
+    MatSelectModule,
     MatListModule
   ]
 })
