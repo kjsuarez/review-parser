@@ -17,6 +17,7 @@ export class AppComponent {
   powerPercentage;
   badReviewPercentage;
   thinking = false;
+  data_recieved = false;
   searchContext = "appStore";
   searchKeyWord;
   breakdown;
@@ -43,6 +44,7 @@ export class AppComponent {
     this.powerPercentage = null;
     this.badReviewPercentage = null;
     this.searchKeyWord = null;
+    this.data_recieved = false;
   }
 
   onChange(value){
@@ -96,6 +98,7 @@ export class AppComponent {
     this.badReviewPercentage = null;
     this.performancePercentage = null;
     this.powerPercentage = null;
+    this.data_recieved = false;
     this.thinking = true;
     if(this.searchContext == "appStore"){
       this.appService.getAppStoreReviewStats(id)
@@ -105,6 +108,7 @@ export class AppComponent {
         this.performancePercentage = response["performancePercentage"];
         this.powerPercentage = response["powerPercentage"];
         this.thinking = false;
+        this.data_recieved = true
       })
       //********//
       // var response = this.appService.mockAppStoreReviewStats(id)
@@ -122,6 +126,7 @@ export class AppComponent {
         this.performancePercentage = response["performancePercentage"];
         this.powerPercentage = response["powerPercentage"];
         this.thinking = false;
+        this.data_recieved = true
       })
     }
 

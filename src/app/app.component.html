@@ -20,7 +20,7 @@
 
     <mat-spinner *ngIf="this.thinking"></mat-spinner>
 
-    <div *ngIf="this.performancePercentage" class="percentages">
+    <div *ngIf="this.data_recieved" class="percentages">
       <div class="percentage-column">
         <h2>Bad reviews related <br> to power</h2>
         <h2 class="big-number">{{powerPercentage}}%</h2>
