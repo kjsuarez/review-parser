@@ -89,9 +89,7 @@ export class AppService {
   }
 
   sendEmail(email) {
-
     const formUrl = HS_FORMS_URL;
-
     return this.http.post(formUrl, {fields: [{ name: "email", value: email}]})
   }
 }

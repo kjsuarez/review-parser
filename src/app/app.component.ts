@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm, FormControl } from "@angular/forms";
 import { Subscription } from 'rxjs';
 import { AppService } from './app.service';
+import {PageEvent} from '@angular/material';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,9 @@ export class AppComponent {
 
   foundApps = [];
   reviews = [];
+  pageSize = 5;
+  pageSizeOptions: number[] = [5, 10, 25];
+  viewableReviews = this.reviews.slice(0, this.pageSize)
   performancePercentage;
   powerPercentage;
   badReviewPercentage;
@@ -57,6 +61,10 @@ export class AppComponent {
     }else{
       this.searchContext = "appStore"
     }
+  }
+
+  onPage(page){
+    this.viewableReviews = this.reviews.slice(page.pageIndex, page.pageIndex + page.pageSize)
   }
 
   doApplicationThings(application, region) {
@@ -104,7 +112,12 @@ export class AppComponent {
         this.reviews = response;
       })
     }else{
-
+      // I dont think this exists on the front end yet
+      this.appService.getPlayStoreReviews(id, region.country)
+      .subscribe(response => {
+        console.log(response[0])
+        this.reviews = response;
+      })
     }
 
   }

@@ -34,32 +34,29 @@
       </div>
 
       <mat-accordion *ngIf="!this.sent_email && data_recieved">
-
         <mat-expansion-panel>
           <mat-expansion-panel-header>
-            <mat-panel-title>
-              learn more
-            </mat-panel-title>
-            <mat-panel-description>
-              Give us your email plz
-            </mat-panel-description>
+            <mat-panel-title> learn more </mat-panel-title>
+            <mat-panel-description> Give us your email plz </mat-panel-description>
           </mat-expansion-panel-header>
-
           <mat-form-field>
             <input matInput [(ngModel)]="userEmail" name="userEmail" placeholder="email">
           </mat-form-field>
-
           <mat-action-row>
             <button mat-button color="primary" [disabled]="!validEmail(userEmail)" (click)="submitEmail(userEmail)">submit</button>
           </mat-action-row>
-
         </mat-expansion-panel>
-
       </mat-accordion>
+
+      <mat-paginator [length]="reviews.length"
+                    [pageSize]="pageSize"
+                    [pageSizeOptions]="pageSizeOptions"
+                    (page)="onPage($event)">
+      </mat-paginator>
 
       <div *ngIf="this.sent_email" class="reviews">
         <mat-list>
-          <mat-list-item *ngFor="let review of reviews">
+          <mat-list-item *ngFor="let review of viewableReviews">
             <h3 matLine> {{review.rating}}/5 </h3>
             <p matLine>
               <span> {{review.content}} </span>
