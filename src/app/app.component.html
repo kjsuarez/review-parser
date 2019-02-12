@@ -33,7 +33,7 @@
 
     <mat-form-field>
       <mat-select placeholder="region" [(ngModel)]="selectedRegion" name="region">
-        <mat-option *ngFor="let region of appStoreRegions" [value]="region.code">
+        <mat-option *ngFor="let region of appStoreRegions" [value]="region">
           {{region.country}}
         </mat-option>
       </mat-select>

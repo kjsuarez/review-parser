@@ -21,16 +21,15 @@ export class AppComponent {
   searchKeyWord;
   breakdown;
   appStoreRegions = [
-    {code: "us", country: "US"},
-    {code: "cn", country: "China"},
-    {code: "gb", country: "UK"},
-    {code: "kr", country: "South Korea"},
-    {code: "fr", country: "France"},
-    {code: "in", country: "India"},
-    {code: "ru", country: "Russia"}
+    {code: "us", country: "US", language: "en"},
+    {code: "cn", country: "China", language: "zh-CN"},
+    {code: "gb", country: "UK", language: "en"},
+    {code: "kr", country: "South Korea", language: "ko-KR"},
+    {code: "fr", country: "France", language: "fr-FR"},
+    {code: "in", country: "India", language: "hi-IN"},
+    {code: "ru", country: "Russia", language: "ru-RU"}
   ];
-  selectedRegion = 'us';
-  selectedLanguage = 'en';
+  selectedRegion = {code: "us", country: "US", language: "en"};
 
   constructor(private appService: AppService) {}
 
@@ -71,7 +70,7 @@ export class AppComponent {
         //*****//
         // this.foundApps = this.appService.mockAppStoreApps(keyword)
       }else{
-        this.appService.getPlayStoreApps(keyword, this.selectedRegion)
+        this.appService.getPlayStoreApps(keyword, this.selectedRegion.code)
         .subscribe(response => {
           this.foundApps = response;
         })
@@ -84,7 +83,7 @@ export class AppComponent {
   }
 
   getReviews(id, region){
-    this.appService.getAppStoreReviews(id, region)
+    this.appService.getAppStoreReviews(id, region.country)
     .subscribe(response => {
       console.log(response[0])
       this.reviews = response;
@@ -92,7 +91,8 @@ export class AppComponent {
   }
 
   getReviewStats(id, region){
-    console.log("region: " + region)
+    console.log("region: ")
+    console.log(region)
     this.badReviewPercentage = null;
     this.performancePercentage = null;
     this.powerPercentage = null;
@@ -113,7 +113,9 @@ export class AppComponent {
       // this.powerPercentage = response["powerPercentage"];
       // this.thinking = false;
     }else{
-      this.appService.getPlayStoreReviewStats(id)
+      console.log("region in component:")
+      console.log(region)
+      this.appService.getPlayStoreReviewStats(id, region.language)
       .subscribe(response => {
         console.log(response)
         this.badReviewPercentage = response["badReviewPercentage"]

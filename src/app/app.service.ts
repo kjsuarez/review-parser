@@ -75,8 +75,10 @@ export class AppService {
     }
   }
 
-  getPlayStoreReviewStats(id){
-    return this.httpClient.get(BACKEND_URL + 'play-store-api/review-breackdown/' + id)
+  getPlayStoreReviewStats(id, region = 'en'){
+    let params = new HttpParams();
+    params = params.append('language', region)
+    return this.httpClient.get(BACKEND_URL + 'play-store-api/review-breackdown/' + id, { params })
     .pipe(
       map((response: any) => {
         return response.obj;

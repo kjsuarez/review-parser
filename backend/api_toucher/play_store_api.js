@@ -20,13 +20,64 @@ function preanReviewResults(results) {
   return results
 }
 
-function getReviewsFor(id) {
+function getReviewsFor(id, language='en') {
   return new Promise(function(resolve, reject) {
     var out_of_reviews = false
     var output = []
     var count = 0;
+    if (language != 'en') {
+      aggregateMultiLanguageReviews(id, language, resolve)
+    } else {
+      console.log("only english reviews");
+      aggregateReviews(id, language, resolve)
+    }
+  });
+}
 
-    async.times(13, function(count, callback) {
+function aggregateReviews(id, language='en', resolve) {
+  var out_of_reviews = false
+  var output = []
+  var count = 0;
+
+  async.times(13, function(count, callback) {
+    getPageOfReviews(id, count + 1).then((result) => {
+      if (result.length > 0) {
+        output = output.concat(result)
+      }else{
+        out_of_reviews = true;
+      }
+      callback(null, count);
+    });
+  }, function(err, users) {
+    if (err) {
+      console.log(err);
+      return resolve([])
+    }else {
+      return resolve(output)
+    }
+  });
+}
+
+function aggregateMultiLanguageReviews(id, language='en', resolve) {
+  console.log("inside multi language aggregator");
+  var out_of_reviews = false
+  var output = []
+  var count = 0;
+  // 1 page = 40 reviews, 13 pages is 520 reviews, we want to
+  // collect about 500 reviews from english and the language of this region.
+
+  async.times(26, function(count, callback) {
+    console.log("inside big async, count: " + count);
+    if (count > 13) {
+      getPageOfReviews(id, count - 12, language).then((result) => {
+        if (result.length > 0) {
+          output = output.concat(result)
+        }else{
+          out_of_reviews = true;
+        }
+        callback(null, count);
+      });
+    }else{
       getPageOfReviews(id, count + 1).then((result) => {
         if (result.length > 0) {
           output = output.concat(result)
@@ -35,19 +86,23 @@ function getReviewsFor(id) {
         }
         callback(null, count);
       });
-    }, function(err, users) {
-      if (err) {
-        console.log(err);
-        resolve([])
-      }else {
-        resolve(output)
-      }
-    });
+    }
+
+  }, function(err, users) {
+    if (err) {
+      console.log(err);
+      return resolve([])
+    }else {
+      console.log("non english review output:");
+      console.log(output.length);
+      return resolve(output)
+    }
   });
 }
 
 function blankReviewStats() {
   return {
+    totalReviewsCollected: 0,
     badReviewCount: bad_reviews.length,
     badReviewPercentage: 0,
     powerCount: 0,
@@ -57,10 +112,11 @@ function blankReviewStats() {
   }
 }
 
-function getPageOfReviews(id, page) {
+function getPageOfReviews(id, page, language='en') {
   return gplay.reviews({
     appId: id,
     page: page,
+    lang: language,
     sort: gplay.sort.NEWEST
   });
 }

@@ -37,8 +37,9 @@ router.get('/reviews/:gameId', function (req, res, next) {
 });
 
 router.get('/review-breackdown/:id', function (req, res, next) {
+  console.log("language from node route: " + req.query.language);
 
-  playStoreApiToucher.getReviewsFor(req.params.id).then((result) => {
+  playStoreApiToucher.getReviewsFor(req.params.id, req.query.language).then((result) => {
     result = playStoreApiToucher.preanReviewResults(result)
 
     breackdown = resultFilter.reviewBreackdown(result)

@@ -66,6 +66,7 @@ function reviewBreackdown(result) {
 
   if (bad_reviews.length > 0) {
     breakdown = {
+      totalReviewsCollected: result.length,
       badReviewCount: bad_reviews.length,
       badReviewPercentage: xPercentOfy(bad_reviews, result),
       powerCount: power_related_reviews.length,
@@ -75,6 +76,7 @@ function reviewBreackdown(result) {
     }
   } else {
     breakdown = {
+      totalReviewsCollected: result.length,
       badReviewCount: bad_reviews.length,
       badReviewPercentage: 0,
       powerCount: 0,
