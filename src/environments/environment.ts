@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://localhost:3000"
+  apiUrl: "http://localhost:3000",
+  hsFormsApiUrl: "https://api.hsforms.com/submissions/v3/integration/submit/2891910/c4146edc-1cf5-4e35-bdf4-96996c859f0a"
 };
 
 /*

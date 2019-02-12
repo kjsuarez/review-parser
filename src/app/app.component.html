@@ -32,6 +32,34 @@
             <h2 class="big-number">{{performancePercentage}}%</h2>
         </div>
       </div>
+
+      <mat-accordion>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              learn more
+            </mat-panel-title>
+            <mat-panel-description>
+              Give us your email plz
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <mat-form-field>
+            <input matInput [(ngModel)]="userEmail" name="userEmail" placeholder="email">
+          </mat-form-field>
+
+          <mat-action-row>
+            <button mat-button color="primary" [disabled]="!validEmail(userEmail)" (click)="submitEmail(userEmail)">submit</button>
+          </mat-action-row>
+
+        </mat-expansion-panel>
+
+      </mat-accordion>
+
+      <div *ngIf="this.sent_email" class="reviews">
+        {{sent_email}}
+      </div>
     </div>
 
     <div class="column-2">

@@ -16,8 +16,11 @@ export class AppComponent {
   performancePercentage;
   powerPercentage;
   badReviewPercentage;
+  userEmail;
   thinking = false;
   data_recieved = false;
+  panelOpenState = false;
+  sent_email = localStorage.getItem('email') || false
   searchContext = "appStore";
   searchKeyWord;
   breakdown;
@@ -129,6 +132,23 @@ export class AppComponent {
         this.data_recieved = true
       })
     }
-
   }
+
+  submitEmail(email) {
+    this.appService.sendEmail(email)
+    .subscribe((response: any) => {
+      console.log("email response: ")
+      console.log(response)
+      if(response.status == 200) {
+        localStorage.setItem('email', email);
+        this.sent_email = email
+      }
+    })    
+  }
+
+  validEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+
 }

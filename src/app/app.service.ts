@@ -6,6 +6,9 @@ import { map } from "rxjs/operators";
 
 import { environment } from '../environments/environment';
 const BACKEND_URL = environment.apiUrl + "/";
+const HS_FORMS_URL = environment.hsFormsApiUrl;
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -83,5 +86,12 @@ export class AppService {
         return response.obj;
       })
     )
+  }
+
+  sendEmail(email) {
+
+    const formUrl = HS_FORMS_URL;
+
+    return this.http.post(formUrl, {fields: [{ name: "email", value: email}]})
   }
 }
