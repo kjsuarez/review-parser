@@ -4,18 +4,19 @@
   font-family: Roboto;
 }
 
-.toggle-div{
-  font-size: 160%;
-  margin-top: 2em;
-  margin-inline-start: 1em;
+.column-1 {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.column-2 {
+
 }
 
 .search-form {
   text-align: center;
   font-family: Roboto;
-  min-width: 150px;
-  max-width: 500px;
-  width: 100%;
 }
 
 .search-input {
@@ -23,8 +24,11 @@
   font-size: 200%;
 }
 
-.search-result {
-
+.toggle-div{
+  font-size: 160%;
+  margin-top: 2em;
+  margin-bottom: 5px;
+  margin-inline-start: 1em;
 }
 
 .percentages {
