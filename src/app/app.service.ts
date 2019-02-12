@@ -14,10 +14,9 @@ const BACKEND_URL = environment.apiUrl + "/";
 export class AppService {
   constructor(private http: Http, private httpClient: HttpClient){}
 
-  getAppStoreApps(keyword){
+  getAppStoreApps(keyword, region = 'us'){
     let params = new HttpParams();
-    params = params.append('keyword', keyword);
-    console.log("url: " + BACKEND_URL + 'app-store-api/itunes-affiliate-search/' + keyword)
+    params = params.append('region', region);
     return this.httpClient.get(BACKEND_URL + 'app-store-api/itunes-affiliate-search/' + keyword, { params })
     .pipe(
       map((response: any) => {

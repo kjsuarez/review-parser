@@ -63,7 +63,7 @@ export class AppComponent {
     var keyword = form.value.searchKeyWord.trim()
     if(keyword){
       if(this.searchContext == "appStore"){
-        this.appService.getAppStoreApps(keyword)
+        this.appService.getAppStoreApps(keyword, this.selectedRegion.code)
         .subscribe(response => {
           this.foundApps = response;
         })
