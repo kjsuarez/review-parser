@@ -13,7 +13,7 @@
           [matAutocomplete]="auto">
 
           <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let application of this.foundApps" [value]="option" (click)="setKeyWord(application.name); getReviewStats(application.id, selectedRegion)">
+            <mat-option *ngFor="let application of this.foundApps" [value]="option" (click)="doApplicationThings(application, selectedRegion)">
               {{application.name}}
             </mat-option>
           </mat-autocomplete>
@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <mat-accordion>
+      <mat-accordion *ngIf="!this.sent_email && data_recieved">
 
         <mat-expansion-panel>
           <mat-expansion-panel-header>
@@ -58,7 +58,14 @@
       </mat-accordion>
 
       <div *ngIf="this.sent_email" class="reviews">
-        {{sent_email}}
+        <mat-list>
+          <mat-list-item *ngFor="let review of reviews">
+            <h3 matLine> {{review.rating}}/5 </h3>
+            <p matLine>
+              <span> {{review.content}} </span>
+            </p>
+          </mat-list-item>
+        </mat-list>
       </div>
     </div>
 

@@ -15,7 +15,7 @@ function preanSearchResults(results) {
 
 function preanReviewResults(results) {
   results = results.map(result => {
-    return {rating: result["score"], title: result["title"], content: result["text"], link: result["url"]}
+    return {rating: result["score"], title: result["title"], content: result["text"], link: result["url"], date: result["date"]}
   })
   return results
 }

@@ -49,7 +49,7 @@ function preanSearchResults(results) {
 
 function preanReviewResults(results) {
   results = results.map(result => {
-    return {rating: result["im:rating"]["label"], title: result["title"]["label"], content: result["content"]["label"], link: result["author"]["uri"]["label"]}
+    return {rating: result["im:rating"]["label"], version: result["im:version"]["label"], title: result["title"]["label"], content: result["content"]["label"], link: result["author"]["uri"]["label"]}
   })
   return results
 }

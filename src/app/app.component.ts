@@ -19,9 +19,9 @@ export class AppComponent {
   userEmail;
   thinking = false;
   data_recieved = false;
-  panelOpenState = false;
   sent_email = localStorage.getItem('email') || false
   searchContext = "appStore";
+  currentAppId;
   searchKeyWord;
   breakdown;
   appStoreRegions = [
@@ -59,6 +59,15 @@ export class AppComponent {
     }
   }
 
+  doApplicationThings(application, region) {
+    this.setKeyWord(application.name);
+    this.currentAppId = application.id
+    this.getReviewStats(application.id, region);
+    if(this.sent_email){
+      this.getReviews(application.id, region);
+    }
+  }
+
   setKeyWord(name){
     this.searchKeyWord = name
     console.log("the keyword is: " + this.searchKeyWord)
@@ -88,11 +97,16 @@ export class AppComponent {
   }
 
   getReviews(id, region){
-    this.appService.getAppStoreReviews(id, region.country)
-    .subscribe(response => {
-      console.log(response[0])
-      this.reviews = response;
-    })
+    if(this.searchContext == "appStore"){
+      this.appService.getAppStoreReviews(id, region.country)
+      .subscribe(response => {
+        console.log(response[0])
+        this.reviews = response;
+      })
+    }else{
+
+    }
+
   }
 
   getReviewStats(id, region){
@@ -141,9 +155,11 @@ export class AppComponent {
       console.log(response)
       if(response.status == 200) {
         localStorage.setItem('email', email);
+
+        this.getReviews(this.currentAppId, this.selectedRegion);
         this.sent_email = email
       }
-    })    
+    })
   }
 
   validEmail(email) {

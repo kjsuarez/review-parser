@@ -28,7 +28,7 @@ router.get('/itunes-affiliate-search/:keyword', function (req, res, next) {
   		limit: 10
   	}
   };
-  
+
   itunesSearchApi(req.params.keyword, opts).then(result => {
     result = appStoreApiToucher.preanSearchResults(result)
     result = appStoreApiToucher.narrowResult(req.params.keyword, result)
