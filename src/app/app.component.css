@@ -31,6 +31,11 @@
   margin-inline-start: 1em;
 }
 
+.details-data {
+  text-align: left;
+  margin: 20px;
+}
+
 .percentages {
   display: flex;
 }
@@ -55,6 +60,10 @@
 
 .review-column-2 {
   min-width: 16em;
+}
+
+.review-paginator {
+  max-width: 20em;
 }
 
 .review-item {

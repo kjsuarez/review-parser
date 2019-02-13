@@ -28,7 +28,6 @@ function getReviewsFor(id, language='en') {
     if (language != 'en') {
       aggregateMultiLanguageReviews(id, language, resolve)
     } else {
-      console.log("only english reviews");
       aggregateReviews(id, language, resolve)
     }
   });
@@ -59,7 +58,6 @@ function aggregateReviews(id, language='en', resolve) {
 }
 
 function aggregateMultiLanguageReviews(id, language='en', resolve) {
-  console.log("inside multi language aggregator");
   var out_of_reviews = false
   var output = []
   var count = 0;
@@ -67,7 +65,6 @@ function aggregateMultiLanguageReviews(id, language='en', resolve) {
   // collect about 500 reviews from english and the language of this region.
 
   async.times(26, function(count, callback) {
-    console.log("inside big async, count: " + count);
     if (count > 13) {
       getPageOfReviews(id, count - 12, language).then((result) => {
         if (result.length > 0) {
@@ -93,8 +90,6 @@ function aggregateMultiLanguageReviews(id, language='en', resolve) {
       console.log(err);
       return resolve([])
     }else {
-      console.log("non english review output:");
-      console.log(output.length);
       return resolve(output)
     }
   });

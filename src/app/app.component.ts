@@ -25,6 +25,9 @@ export class AppComponent {
   performanceReviews = [];
   viewablePerformanceReviews = this.performanceReviews.slice(0, this.pageSize)
 
+  totalReviewsCollected;
+  badReviewCount;
+  badReviewPercentage;
   performancePercentage;
   powerPercentage;
   badReviewPercentage;
@@ -90,7 +93,6 @@ export class AppComponent {
 
   setKeyWord(name){
     this.searchKeyWord = name
-    console.log("the keyword is: " + this.searchKeyWord)
   }
 
   updateSearch(form){
@@ -145,7 +147,6 @@ export class AppComponent {
     if(this.searchContext == "appStore"){
       this.appService.getAppStoreReviews(id, region.country)
       .subscribe(response => {
-        console.log(response[0])
         this.reviews = response;
         this.viewableReviews = this.reviews.slice(0, this.pageSize)
       })
@@ -153,7 +154,6 @@ export class AppComponent {
       // I dont think this exists on the front end yet
       this.appService.getPlayStoreReviews(id, region.country)
       .subscribe(response => {
-        console.log(response[0])
         this.reviews = response;
         this.viewableReviews = this.reviews.slice(0, this.pageSize)
       })
@@ -162,8 +162,6 @@ export class AppComponent {
   }
 
   getReviewStats(id, region){
-    console.log("region: ")
-    console.log(region)
     this.badReviewPercentage = null;
     this.performancePercentage = null;
     this.powerPercentage = null;
@@ -173,7 +171,9 @@ export class AppComponent {
       this.appService.getAppStoreReviewStats(id)
       .subscribe(response => {
         console.log(response)
-        this.badReviewPercentage = response["badReviewPercentage"]
+        this.totalReviewsCollected = response["totalReviewsCollected"];
+        this.badReviewCount = response["badReviewCount"];
+        this.badReviewPercentage = response["badReviewPercentage"];
         this.performancePercentage = response["performancePercentage"];
         this.powerPercentage = response["powerPercentage"];
         this.thinking = false;

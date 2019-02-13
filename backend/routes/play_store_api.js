@@ -7,7 +7,6 @@ var playStoreApiToucher = require('../api_toucher/play_store_api')
 var resultFilter = require('../filters/review_filters')
 
 router.get('/play-store-search/:keyword', function (req, res, next) {
-  console.log("query string: " + req.query.region);
   gplay.search({
     term: req.params.keyword,
     country: req.query.region,
@@ -51,7 +50,6 @@ router.get('/relevant-reviews/:gameId', function (req, res, next) {
 });
 
 router.get('/review-breackdown/:id', function (req, res, next) {
-  console.log("language from node route: " + req.query.language);
 
   playStoreApiToucher.getReviewsFor(req.params.id, req.query.language).then((result) => {
     result = playStoreApiToucher.preanReviewResults(result)

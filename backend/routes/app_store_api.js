@@ -56,7 +56,6 @@ router.get('/relevant-reviews/:gameId', function (req, res, next) {
 });
 
 router.get('/review-breackdown/:id', function (req, res, next) {
-  console.log("region: " + req.query.region);
   appStoreApiToucher.getReviewsFor(req.params.id, req.query.region).then((result) => {
     result = appStoreApiToucher.preanReviewResults(result)
 

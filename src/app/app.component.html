@@ -22,6 +22,11 @@
 
       <mat-spinner *ngIf="this.thinking"></mat-spinner>
 
+      <div *ngIf="this.data_recieved" class="details-data">
+        <h3>total reviews pulled: {{totalReviewsCollected}}</h3>
+        <h3> number of reviews below 4 stars: {{badReviewCount}} ({{badReviewPercentage}}%)</h3>
+      </div>
+
       <div *ngIf="this.data_recieved" class="percentages">
         <div class="percentage-column">
           <h2>Bad reviews related <br> to power</h2>
@@ -55,7 +60,8 @@
                         [length]="powerReviews.length"
                         [pageSize]="pageSize"
                         [pageSizeOptions]="pageSizeOptions"
-                        (page)="onPowerPage($event)">
+                        (page)="onPowerPage($event)"
+                        class="review-paginator">
           </mat-paginator>
 
           <div *ngIf="this.sent_email" class="power-reviews">
@@ -74,7 +80,8 @@
                         [length]="performanceReviews.length"
                         [pageSize]="pageSize"
                         [pageSizeOptions]="pageSizeOptions"
-                        (page)="onPerformancePage($event)">
+                        (page)="onPerformancePage($event)"
+                        class="review-paginator">
           </mat-paginator>
 
           <div *ngIf="this.sent_email" class="performance-reviews">
