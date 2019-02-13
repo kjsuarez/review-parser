@@ -112,10 +112,16 @@ function containsAtLeastOneOf(str, arry) {
   return pass
 }
 
+function relevantReviews(result) {
+  bad_reviews = badReviews(result)
+
+  power_related_reviews = filterReviewsByKeywordSet(bad_reviews, power_dictionary)
+  performance_related_reviews = filterReviewsByKeywordSet(bad_reviews, performance_dictionary)
+
+  return {power_reviews: power_related_reviews, performance_reviews: performance_related_reviews}
+}
+
 module.exports = {
-  // getReviewsFor: getReviewsFor,
-  // preanSearchResults: preanSearchResults,
-  // // narrowResult: narrowResult,
-  // preanReviewResults: preanReviewResults,
-  reviewBreackdown: reviewBreackdown
+  reviewBreackdown: reviewBreackdown,
+  relevantReviews: relevantReviews
 };

@@ -14,9 +14,17 @@ export class AppComponent {
 
   foundApps = [];
   reviews = [];
-  pageSize = 5;
+  viewableReviews = [];
+
   pageSizeOptions: number[] = [5, 10, 25];
-  viewableReviews = this.reviews.slice(0, this.pageSize)
+  pageSize = 5;
+
+  powerReviews = [];
+  viewablePowerReviews = this.powerReviews.slice(0, this.pageSize)
+
+  performanceReviews = [];
+  viewablePerformanceReviews = this.performanceReviews.slice(0, this.pageSize)
+
   performancePercentage;
   powerPercentage;
   badReviewPercentage;
@@ -63,8 +71,12 @@ export class AppComponent {
     }
   }
 
-  onPage(page){
-    this.viewableReviews = this.reviews.slice(page.pageIndex, page.pageIndex + page.pageSize)
+  onPowerPage(page){
+    this.viewablePowerReviews = this.powerReviews.slice(page.pageIndex, page.pageIndex + page.pageSize)
+  }
+
+  onPerformancePage(page){
+    this.viewablePerformanceReviews = this.performanceReviews.slice(page.pageIndex, page.pageIndex + page.pageSize)
   }
 
   doApplicationThings(application, region) {
@@ -72,7 +84,7 @@ export class AppComponent {
     this.currentAppId = application.id
     this.getReviewStats(application.id, region);
     if(this.sent_email){
-      this.getReviews(application.id, region);
+      this.getRelevantReviews(application.id, region);
     }
   }
 
@@ -100,6 +112,31 @@ export class AppComponent {
 
     }else{
       this.foundApps = []
+    }
+
+  }
+
+  getRelevantReviews(id, region){
+    if(this.searchContext == "appStore"){
+      this.appService.getRelevantAppStoreReviews(id, region.country)
+      .subscribe(response => {
+
+        this.powerReviews = response.power_reviews;
+        this.viewablePowerReviews = this.powerReviews.slice(0, this.pageSize)
+
+        this.performanceReviews = response.performance_reviews;
+        this.viewablePerformanceReviews = this.performanceReviews.slice(0, this.pageSize)
+      })
+    }else{
+      // I dont think this exists on the front end yet
+      this.appService.getRelevantPlayStoreReviews(id, region.country)
+      .subscribe(response => {
+        this.powerReviews = response.power_reviews;
+        this.viewablePowerReviews = this.powerReviews.slice(0, this.pageSize)
+
+        this.performanceReviews = response.performance_reviews;
+        this.viewablePerformanceReviews = this.performanceReviews.slice(0, this.pageSize)
+      })
     }
 
   }
@@ -171,7 +208,7 @@ export class AppComponent {
       if(response.status == 200) {
         localStorage.setItem('email', email);
 
-        this.getReviews(this.currentAppId, this.selectedRegion);
+        this.getRelevantReviews(this.currentAppId, this.selectedRegion);
         this.sent_email = email
       }
     })

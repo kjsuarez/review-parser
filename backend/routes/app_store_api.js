@@ -41,6 +41,20 @@ router.get('/itunes-affiliate-search/:keyword', function (req, res, next) {
   });
 });
 
+router.get('/relevant-reviews/:gameId', function (req, res, next) {
+  appStoreApiToucher.getReviewsFor(req.params.gameId).then((result) => {
+    result = appStoreApiToucher.preanReviewResults(result)
+
+    relevant = resultFilter.relevantReviews(result)
+    res.status(200).json({
+      message: 'success',
+      obj: relevant
+    })
+  }).catch(error => {
+    console.log(error);
+  });
+});
+
 router.get('/review-breackdown/:id', function (req, res, next) {
   console.log("region: " + req.query.region);
   appStoreApiToucher.getReviewsFor(req.params.id, req.query.region).then((result) => {

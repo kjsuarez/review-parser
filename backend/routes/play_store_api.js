@@ -36,6 +36,20 @@ router.get('/reviews/:gameId', function (req, res, next) {
   });
 });
 
+router.get('/relevant-reviews/:gameId', function (req, res, next) {
+  playStoreApiToucher.getReviewsFor(req.params.gameId).then((result) => {
+    result = playStoreApiToucher.preanReviewResults(result)
+
+    relevant = resultFilter.relevantReviews(result)
+    res.status(200).json({
+      message: 'success',
+      obj: relevant
+    })
+  }).catch(error => {
+    console.log(error);
+  });
+});
+
 router.get('/review-breackdown/:id', function (req, res, next) {
   console.log("language from node route: " + req.query.language);
 

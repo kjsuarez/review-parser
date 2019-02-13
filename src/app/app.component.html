@@ -48,20 +48,46 @@
         </mat-expansion-panel>
       </mat-accordion>
 
-      <mat-paginator [length]="reviews.length"
-                    [pageSize]="pageSize"
-                    [pageSizeOptions]="pageSizeOptions"
-                    (page)="onPage($event)">
-      </mat-paginator>
+      <div *ngIf="data_recieved" class="reviews">
+        <div class="review-column-1">
+          <h3 *ngIf="powerReviews.length == 0"> No bad reviews related to Power 🙂 </h3>
+          <mat-paginator *ngIf="powerReviews.length > 0"
+                        [length]="powerReviews.length"
+                        [pageSize]="pageSize"
+                        [pageSizeOptions]="pageSizeOptions"
+                        (page)="onPowerPage($event)">
+          </mat-paginator>
 
-      <div *ngIf="this.sent_email" class="reviews">
-        <ul>
-          <li *ngFor="let review of viewableReviews" class="review-item">
-            <mat-icon *ngFor="let star of starArray(review.rating)" class=star-icon>star</mat-icon>
-            <p > {{review.content}} </p>
-          </li>
-        </ul>
+          <div *ngIf="this.sent_email" class="power-reviews">
+            <ul>
+              <li *ngFor="let review of viewablePowerReviews" class="review-item">
+                <mat-icon *ngFor="let star of starArray(review.rating)" class=star-icon>star</mat-icon>
+                <p > {{review.content}} </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="review-column-2">
+          <h3 *ngIf="performanceReviews.length == 0"> No bad reviews related to Preformance 🙂 </h3>
+          <mat-paginator *ngIf="performanceReviews.length > 0"
+                        [length]="performanceReviews.length"
+                        [pageSize]="pageSize"
+                        [pageSizeOptions]="pageSizeOptions"
+                        (page)="onPerformancePage($event)">
+          </mat-paginator>
+
+          <div *ngIf="this.sent_email" class="performance-reviews">
+            <ul>
+              <li *ngFor="let review of viewablePerformanceReviews" class="review-item">
+                <mat-icon *ngFor="let star of starArray(review.rating)" class=star-icon>star</mat-icon>
+                <p > {{review.content}} </p>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
+
     </div>
 
     <div class="column-2">

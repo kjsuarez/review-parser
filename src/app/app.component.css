@@ -45,6 +45,18 @@
   margin-top: 0;
 }
 
+.reviews {
+  display: flex;
+}
+
+.review-column-1 {
+  min-width: 16em;
+}
+
+.review-column-2 {
+  min-width: 16em;
+}
+
 .review-item {
   display: block;
   text-align: left;
