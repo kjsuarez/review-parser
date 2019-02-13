@@ -55,14 +55,12 @@
       </mat-paginator>
 
       <div *ngIf="this.sent_email" class="reviews">
-        <mat-list>
-          <mat-list-item *ngFor="let review of viewableReviews">
-            <h3 matLine> {{review.rating}}/5 </h3>
-            <p matLine>
-              <span> {{review.content}} </span>
-            </p>
-          </mat-list-item>
-        </mat-list>
+        <ul>
+          <li *ngFor="let review of viewableReviews" class="review-item">
+            <mat-icon *ngFor="let star of starArray(review.rating)" class=star-icon>star</mat-icon>
+            <p > {{review.content}} </p>
+          </li>
+        </ul>
       </div>
     </div>
 

@@ -110,6 +110,7 @@ export class AppComponent {
       .subscribe(response => {
         console.log(response[0])
         this.reviews = response;
+        this.viewableReviews = this.reviews.slice(0, this.pageSize)
       })
     }else{
       // I dont think this exists on the front end yet
@@ -117,6 +118,7 @@ export class AppComponent {
       .subscribe(response => {
         console.log(response[0])
         this.reviews = response;
+        this.viewableReviews = this.reviews.slice(0, this.pageSize)
       })
     }
 
@@ -178,6 +180,11 @@ export class AppComponent {
   validEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
+  }
+
+  starArray(number) {
+    var arry = Array(parseInt(number)).fill("star")
+    return arry
   }
 
 }

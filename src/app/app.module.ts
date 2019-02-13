@@ -6,6 +6,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AngularMaterialModule } from "./angular-material.module";
 
+import { StarRatingModule } from 'angular-star-rating';
+
 import { AppComponent } from './app.component';
 import { AppService } from './app.service';
 import { routing } from "./app.routing";
@@ -22,6 +24,7 @@ import { routing } from "./app.routing";
     AngularMaterialModule,
     BrowserAnimationsModule,
     HttpModule,
+    StarRatingModule.forRoot(),
     routing
   ],
   providers: [],

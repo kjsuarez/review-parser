@@ -7,6 +7,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSelectModule} from '@angular/material/select';
+import {MatIconModule} from '@angular/material/icon';
 import {
   MatInputModule,
   MatCardModule,
@@ -39,6 +40,7 @@ import {
     MatAutocompleteModule,
     MatSlideToggleModule,
     MatSelectModule,
+    MatIconModule,
     MatListModule
   ]
 })

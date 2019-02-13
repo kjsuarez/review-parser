@@ -55,6 +55,17 @@ export class AppService {
     )
   }
 
+  getPlayStoreReviews(id, region = 'us'){
+    let params = new HttpParams();
+    params = params.append('region', region)
+    return this.httpClient.get(BACKEND_URL + 'play-store-api/reviews/' + id, { params })
+    .pipe(
+      map((response: any) => {
+        return response.obj;
+      })
+    )
+  }
+
   getAppStoreReviewStats(id, region = 'us'){
     let params = new HttpParams();
     params = params.append('region', region)

@@ -6,7 +6,7 @@
 
 .column-1 {
   min-width: 150px;
-  max-width: 500px;
+  max-width: 40em;
   width: 100%;
 }
 
@@ -43,4 +43,17 @@
   font-size: 500%;
   text-align: center;
   margin-top: 0;
+}
+
+.review-item {
+  display: block;
+  text-align: left;
+}
+
+.star-icon {
+    color: #ffe400;
+}
+/* Note: If you're using an SVG icon, you should make the class target the `<svg>` element */
+.star-icon svg {
+    fill: #ffe400;
 }
