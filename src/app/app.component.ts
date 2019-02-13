@@ -30,7 +30,6 @@ export class AppComponent {
   badReviewPercentage;
   performancePercentage;
   powerPercentage;
-  badReviewPercentage;
   userEmail;
   thinking = false;
   data_recieved = false;
@@ -123,20 +122,20 @@ export class AppComponent {
       this.appService.getRelevantAppStoreReviews(id, region.country)
       .subscribe(response => {
 
-        this.powerReviews = response.power_reviews;
+        this.powerReviews = response.power_reviews.reviews;
         this.viewablePowerReviews = this.powerReviews.slice(0, this.pageSize)
 
-        this.performanceReviews = response.performance_reviews;
+        this.performanceReviews = response.performance_reviews.reviews;
         this.viewablePerformanceReviews = this.performanceReviews.slice(0, this.pageSize)
       })
     }else{
       // I dont think this exists on the front end yet
       this.appService.getRelevantPlayStoreReviews(id, region.country)
       .subscribe(response => {
-        this.powerReviews = response.power_reviews;
+        this.powerReviews = response.power_reviews.reviews;
         this.viewablePowerReviews = this.powerReviews.slice(0, this.pageSize)
 
-        this.performanceReviews = response.performance_reviews;
+        this.performanceReviews = response.performance_reviews.reviews;
         this.viewablePerformanceReviews = this.performanceReviews.slice(0, this.pageSize)
       })
     }

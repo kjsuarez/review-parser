@@ -67,8 +67,8 @@
           <div *ngIf="this.sent_email" class="power-reviews">
             <ul>
               <li *ngFor="let review of viewablePowerReviews" class="review-item">
-                <mat-icon *ngFor="let star of starArray(review.rating)" class=star-icon>star</mat-icon>
-                <p > {{review.content}} </p>
+                <mat-icon *ngFor="let star of starArray(review.review.rating)" class=star-icon>star</mat-icon>
+                <p > {{review.review.content}} </p>
               </li>
             </ul>
           </div>
@@ -87,8 +87,8 @@
           <div *ngIf="this.sent_email" class="performance-reviews">
             <ul>
               <li *ngFor="let review of viewablePerformanceReviews" class="review-item">
-                <mat-icon *ngFor="let star of starArray(review.rating)" class=star-icon>star</mat-icon>
-                <p > {{review.content}} </p>
+                <mat-icon *ngFor="let star of starArray(review.review.rating)" class=star-icon>star</mat-icon>
+                <p > {{review.review.content}} </p>
               </li>
             </ul>
           </div>

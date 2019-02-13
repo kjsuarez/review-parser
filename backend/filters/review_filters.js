@@ -4,16 +4,6 @@ var express = require('express');
 const fs = require('fs');
 var async = require('async');
 
-// var power_dictionary = [
-//   "battery", "power", "temperature", "heating"
-// ]
-// var performance_dictionary = [
-//   "Slow", "graphic", "graphics", "crash",
-//   "lag", "resolution", "performance", "responsive",
-//   "fps", "frame rate", "cpu", "gpu", "freeze",
-//    "stutter", "janks", "judder", "shaky"]
-
-
 var power_dictionary =  [
   "battery", "drain", "temperature", "heating",
   "batería", "poder", "potencia", "temperatura", "calefacción", "sobrecalentar",
@@ -61,10 +51,21 @@ function reviewBreackdown(result) {
 
   bad_reviews = badReviews(result)
 
-  power_related_reviews = filterReviewsByKeywordSet(bad_reviews, power_dictionary)
-  performance_related_reviews = filterReviewsByKeywordSet(bad_reviews, performance_dictionary)
+  power_related_review_data = filterReviewsByKeywordSet(bad_reviews, power_dictionary)
+  power_related_reviews = power_related_review_data.reviews
+
+  performance_related_review_data = filterReviewsByKeywordSet(bad_reviews, performance_dictionary)
+  performance_related_reviews = performance_related_review_data.reviews
+
+  power_keyword_stats = power_related_review_data.keywordStats
+  performance_keyword_stats = performance_related_review_data.keywordStats
+
+  var all_keyword_stats = Object.assign({}, power_keyword_stats, performance_keyword_stats);
 
   if (bad_reviews.length > 0) {
+    console.log("power stats: ");
+    console.log(power_related_review_data.keywordStats);
+
     breakdown = {
       totalReviewsCollected: result.length,
       badReviewCount: bad_reviews.length,
@@ -72,7 +73,8 @@ function reviewBreackdown(result) {
       powerCount: power_related_reviews.length,
       powerPercentage: xPercentOfy(power_related_reviews, bad_reviews),
       performanceCount: performance_related_reviews.length,
-      performancePercentage: xPercentOfy(performance_related_reviews, bad_reviews)
+      performancePercentage: xPercentOfy(performance_related_reviews, bad_reviews),
+      keywordStats: all_keyword_stats
     }
   } else {
     breakdown = {
@@ -82,7 +84,8 @@ function reviewBreackdown(result) {
       powerCount: 0,
       powerPercentage: 0,
       performanceCount: 0,
-      performancePercentage: 0
+      performancePercentage: 0,
+      keywordStats: []
     }
   }
 
@@ -99,7 +102,38 @@ function xPercentOfy(x, y) {
 }
 
 function filterReviewsByKeywordSet(reviews, keywords){
-  return reviews.filter(review =>  containsAtLeastOneOf(review["content"], keywords) )
+  console.log("inside keyword filter, review array length:" + reviews.length);
+  var keyword_stats = buildKeywordStats(keywords)
+  var keywords_in_review;
+  var output = {reviews: [], keywordStats: keyword_stats};
+
+  reviews.forEach(function(review) {
+    keywords_in_review = [];
+    keywords.forEach(function(keyword) {
+      if (review["content"].toLowerCase().includes(keyword.toLowerCase())) {
+        console.log("found a match");
+        keywords_in_review = keywords_in_review.concat(keyword)
+        keyword_stats[keyword] += 1
+
+      }
+    })
+    console.log("keywords_in_review after keyword loop: " + keywords_in_review.length);
+    if (keywords_in_review.length > 0) {
+      output.reviews = output.reviews.concat({review: review, keywords: keywords_in_review})
+    }
+    keywords_in_review = [];
+  })
+
+  output.keyWordStats = keyword_stats
+  return output//reviews.filter(review =>  containsAtLeastOneOf(review["content"], keywords) )
+}
+
+function buildKeywordStats(keywords) {
+  var keyWordStats = {}
+  keywords.forEach(function(keyword) {
+    keyWordStats[keyword] = 0
+  });
+  return keyWordStats
 }
 
 function containsAtLeastOneOf(str, arry) {
