@@ -26,7 +26,7 @@ var power_dictionary =  [
   "배터리", "전원", "온도", "난방", "과열"
 ]
 var performance_dictionary =  [
-  "Slow", "crash", "load", "server",
+  "Slow", "crash", " load", "server", " hang",
   "lag", "resolution", "performance", "responsive",
   "fps", "frame rate", "cpu", "gpu", "freeze",
    "stutter", "janks", "judder", "shaky",

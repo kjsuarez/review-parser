@@ -170,7 +170,7 @@ export class AppComponent {
     if(this.searchContext == "appStore"){
       this.appService.getAppStoreReviewStats(id)
       .subscribe(response => {
-        console.log(response)
+        console.log("total reviews: " + response["totalReviewsCollected"])
         this.totalReviewsCollected = response["totalReviewsCollected"];
         this.badReviewCount = response["badReviewCount"];
         this.badReviewPercentage = response["badReviewPercentage"];
