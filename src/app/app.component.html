@@ -22,11 +22,6 @@
 
       <mat-spinner *ngIf="this.thinking"></mat-spinner>
 
-      <div *ngIf="this.data_recieved" class="details-data">
-        <h3>total reviews pulled: {{totalReviewsCollected}}</h3>
-        <h3> number of reviews below 4 stars: {{badReviewCount}} ({{badReviewPercentage}}%)</h3>
-      </div>
-
       <div *ngIf="this.data_recieved" class="percentages">
         <div class="percentage-column">
           <h2>Bad reviews related <br> to power</h2>
@@ -37,6 +32,47 @@
             <h2 class="big-number">{{performancePercentage}}%</h2>
         </div>
       </div>
+
+      <div *ngIf="this.data_recieved" class="details-data">
+        <h3>total reviews pulled: {{totalReviewsCollected}}</h3>
+        <h3> number of reviews below 4 stars: {{badReviewCount}} ({{badReviewPercentage}}%)</h3>
+        <br>
+        <h3>keyword breakdown:</h3>
+        <div class="minutiae">
+          <div class="minutiae-column-1">
+            <h3>battery: {{keywordStats["battery"]}}</h3>
+            <h3>drain: {{keywordStats["drain"]}}</h3>
+            <h3>temperature: {{keywordStats["temperature"]}}</h3>
+            <h3>heating: {{keywordStats["heating"]}}</h3>
+          </div>
+          <div class="minutiae-column-2">
+            <h3>slow: {{keywordStats["slow"]}}</h3>
+            <h3>crash: {{keywordStats["crash"]}}</h3>
+            <h3>load: {{keywordStats[" load"]}}</h3>
+            <h3>server: {{keywordStats["server"]}}</h3>
+            <h3>hang: {{keywordStats["hang"]}}</h3>
+            <h3>lag: {{keywordStats["lag"]}}</h3>
+          </div>
+          <div class="minutiae-column-3">
+            <h3>fps: {{keywordStats["fps"]}}</h3>
+            <h3>frame rate: {{keywordStats["frame rate"]}}</h3>
+            <h3>cpu: {{keywordStats["cpu"]}}</h3>
+            <h3>gpu: {{keywordStats["gpu"]}}</h3>
+            <h3>freeze: {{keywordStats["freeze"]}}</h3>
+            <h3>stutter: {{keywordStats["stutter"]}}</h3>
+          </div>
+          <div class="minutiae-column-4">
+            <h3>jank: {{keywordStats["jank"]}}</h3>
+            <h3>judder: {{keywordStats["judder"]}}</h3>
+            <h3>shaky: {{keywordStats["shaky"]}}</h3>
+            <h3>resolution: {{keywordStats["resolution"]}}</h3>
+            <h3>performance: {{keywordStats["performance"]}}</h3>
+            <h3>responsive: {{keywordStats["responsive"]}}</h3>
+          </div>
+        </div>
+      </div>
+
+
 
       <mat-accordion *ngIf="!this.sent_email && data_recieved">
         <mat-expansion-panel>
@@ -69,6 +105,9 @@
               <li *ngFor="let review of viewablePowerReviews" class="review-item">
                 <mat-icon *ngFor="let star of starArray(review.review.rating)" class=star-icon>star</mat-icon>
                 <p > {{review.review.content}} </p>
+                <div class="review-subtext">
+                  <p *ngFor="let keyword of review.keywords" > {{keyword}} </p>
+                </div>
               </li>
             </ul>
           </div>
@@ -89,6 +128,9 @@
               <li *ngFor="let review of viewablePerformanceReviews" class="review-item">
                 <mat-icon *ngFor="let star of starArray(review.review.rating)" class=star-icon>star</mat-icon>
                 <p > {{review.review.content}} </p>
+                <div class="review-subtext">
+                  <p *ngFor="let keyword of review.keywords" > {{keyword}} </p>
+                </div>
               </li>
             </ul>
           </div>

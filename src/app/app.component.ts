@@ -25,6 +25,7 @@ export class AppComponent {
   performanceReviews = [];
   viewablePerformanceReviews = this.performanceReviews.slice(0, this.pageSize)
 
+  keywordStats;
   totalReviewsCollected;
   badReviewCount;
   badReviewPercentage;
@@ -169,7 +170,9 @@ export class AppComponent {
     if(this.searchContext == "appStore"){
       this.appService.getAppStoreReviewStats(id)
       .subscribe(response => {
-        console.log("total reviews: " + response["totalReviewsCollected"])
+        console.log("review stats ")
+        console.log(response)
+        this.keywordStats = response["keywordStats"]
         this.totalReviewsCollected = response["totalReviewsCollected"];
         this.badReviewCount = response["badReviewCount"];
         this.badReviewPercentage = response["badReviewPercentage"];

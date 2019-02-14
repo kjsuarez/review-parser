@@ -16,10 +16,10 @@ var power_dictionary =  [
   "배터리", "전원", "온도", "난방", "과열"
 ]
 var performance_dictionary =  [
-  "Slow", "crash", " load", "server", " hang",
+  "slow", "crash", " load", "server", " hang",
   "lag", "resolution", "performance", "responsive",
   "fps", "frame rate", "cpu", "gpu", "freeze",
-   "stutter", "janks", "judder", "shaky",
+   "stutter", "jank", "judder", "shaky",
 "Lento", "gráfico", "gráficos", "bloqueo",
    "retraso", "resolución", "rendimiento", "sensible",
    "congelar", "tartamudear", "velocidad de fotogramas",
@@ -40,7 +40,7 @@ var performance_dictionary =  [
 "Langsam", "Grafik", "Absturz",
    "Verzögerung", "Auflösung", "Leistung", "ansprechend",
    "einfrieren", "stottern", "bildrate",
-"Lent", "graphique", "crash",
+"Lent", "graphique",
    "lag", "resolution", "performance", "responsive",
    "geler", "bégayer", "cadence",
 "느리게", "그래픽", "충돌",

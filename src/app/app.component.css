@@ -36,6 +36,14 @@
   margin: 20px;
 }
 
+.minutiae {
+  display: flex;
+}
+
+.minutiae * {
+  margin-right: 1em;
+}
+
 .percentages {
   display: flex;
 }
@@ -77,4 +85,14 @@
 /* Note: If you're using an SVG icon, you should make the class target the `<svg>` element */
 .star-icon svg {
     fill: #ffe400;
+}
+
+.review-subtext {
+  display: flex;
+}
+
+.review-subtext * {
+  padding-right: 15px;
+  color: grey;
+  margin-top: 0;
 }
