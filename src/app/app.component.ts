@@ -79,7 +79,7 @@ export class AppComponent {
   }
 
   onPerformancePage(page){
-    this.viewablePerformanceReviews = this.performanceReviews.slice(page.pageIndex, page.pageIndex + page.pageSize)
+    this.viewablePerformanceReviews = this.performanceReviews.slice((page.pageIndex*page.pageSize), (page.pageIndex*page.pageSize) + page.pageSize)
   }
 
   doApplicationThings(application, region) {
