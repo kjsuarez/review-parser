@@ -5,7 +5,7 @@ const fs = require('fs');
 var async = require('async');
 
 var power_dictionary =  [
-  "battery", "drain", "temperature", "heating",
+  "battery", "drain", "temperature", " heating",
   "batería", "poder", "potencia", "temperatura", "calefacción", "sobrecalentar",
   "bateria", "potência", "temperatura", "aquecimento", "sobreaquecimento",
   "батарейка", "мощность", "температура", "нагрев", "перегрев",
@@ -40,8 +40,7 @@ var performance_dictionary =  [
 "Langsam", "Grafik", "Absturz",
    "Verzögerung", "Auflösung", "Leistung", "ansprechend",
    "einfrieren", "stottern", "bildrate",
-"Lent", "graphique",
-   "lag", "resolution", "performance", "responsive",
+"Lent", "graphique", "resolution", "performance", "responsive",
    "geler", "bégayer", "cadence",
 "느리게", "그래픽", "충돌",
    "지연", "해결", "성과", "반응",
@@ -63,8 +62,6 @@ function reviewBreackdown(result) {
   var all_keyword_stats = Object.assign({}, power_keyword_stats, performance_keyword_stats);
 
   if (bad_reviews.length > 0) {
-    console.log("power stats: ");
-    console.log(power_related_review_data.keywordStats);
 
     breakdown = {
       totalReviewsCollected: result.length,
@@ -101,8 +98,7 @@ function xPercentOfy(x, y) {
   return parseInt((x.length/y.length)*100)
 }
 
-function filterReviewsByKeywordSet(reviews, keywords){
-  console.log("inside keyword filter, review array length:" + reviews.length);
+function filterReviewsByKeywordSet(reviews, keywords) {
   var keyword_stats = buildKeywordStats(keywords)
   var keywords_in_review;
   var output = {reviews: [], keywordStats: keyword_stats};
@@ -111,13 +107,11 @@ function filterReviewsByKeywordSet(reviews, keywords){
     keywords_in_review = [];
     keywords.forEach(function(keyword) {
       if (review["content"].toLowerCase().includes(keyword.toLowerCase())) {
-        console.log("found a match");
         keywords_in_review = keywords_in_review.concat(keyword)
         keyword_stats[keyword] += 1
 
       }
     })
-    console.log("keywords_in_review after keyword loop: " + keywords_in_review.length);
     if (keywords_in_review.length > 0) {
       output.reviews = output.reviews.concat({review: review, keywords: keywords_in_review})
     }

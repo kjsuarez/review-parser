@@ -192,7 +192,8 @@ export class AppComponent {
       console.log(region)
       this.appService.getPlayStoreReviewStats(id, region.language)
       .subscribe(response => {
-        console.log(response)
+        this.keywordStats = response["keywordStats"]
+        this.totalReviewsCollected = response["totalReviewsCollected"];
         this.badReviewPercentage = response["badReviewPercentage"]
         this.performancePercentage = response["performancePercentage"];
         this.powerPercentage = response["powerPercentage"];
