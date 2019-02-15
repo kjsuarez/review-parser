@@ -20,6 +20,7 @@ mongoose.connect(process.env.DATABASE_URL)
 
 const appStoreRoutes = require('./routes/app_store_api');
 const playStoreRoutes = require('./routes/play_store_api');
+const reviewSaverRoutes = require('./routes/review_saver');
 
 const app = express();
 
@@ -41,5 +42,6 @@ app.use((req, res, next) => {
 
 app.use('/app-store-api', appStoreRoutes);
 app.use('/play-store-api', playStoreRoutes);
+app.use('/review-saver', reviewSaverRoutes);
 
 module.exports = app;
