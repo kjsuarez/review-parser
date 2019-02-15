@@ -23,17 +23,21 @@ var bigApps = [
 router.post('/update-reviews/:appId/:store', (req, res, next) => {
 
   if (req.params.store == 'app') {
+
     dbToucher.saveAppStoreReviews(req.params.appId).then((result) => {
-      if (result.title == 'success') {
-        return res.status(200).json(result);
-      } else {
-        return res.status(500).json(result);
-      }
+      return res.status(result.title == 'success' ? 200 : 500).json(result);
     }).catch(error => {
       console.log(error);
     });
+
   } else if (req.params.store == 'play') {
-    // playstore saver
+
+    dbToucher.savePlayStoreReviews(req.params.appId).then((result) => {
+      return res.status(result.title == 'success' ? 200 : 500).json(result);
+    }).catch(error => {
+      console.log(error);
+    });
+
   }else{
     return res.status(500).json({
       title: "illegal store specified",
@@ -46,17 +50,17 @@ router.get('/apps/:store/list', (req, res, next) => {
   if (req.params.store == 'app') {
 
     dbToucher.pullAppStoreApps().then((result) => {
-      if (result.title == 'success') {
-        return res.status(200).json(result);
-      } else {
-        return res.status(500).json(result);
-      }
+      return res.status(result.title == 'success' ? 200 : 500).json(result);
     }).catch(error => {
       console.log(error);
     });
 
   }else if (req.params.store == 'play'){
-
+    dbToucher.pullPlayStoreApps().then((result) => {
+      return res.status(result.title == 'success' ? 200 : 500).json(result);
+    }).catch(error => {
+      console.log(error);
+    });
   } else {
     return res.status(500).json({
       title: "illegal store specified",

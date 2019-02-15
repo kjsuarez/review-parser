@@ -29,13 +29,61 @@ function saveAppStoreReviews(appId, region='us') {
           text: review["content"],
           date: Date.now().toString(),
           version: review["version"],
-          region: "us"
+          region: region
         });
 
         reviews = reviews.concat(appStoreReview)
       })
 
       AppStoreReview.insertMany(reviews, {ordered: false}, function (err, result) {
+        if (err) {
+          if (err.code == 11000) {
+            resolve({
+              title: 'success',
+              message: 'found review duplicates but otherwise fine'
+            })
+          } else {
+            resolve({
+              title: 'Something went pear shaped trying to save review',
+              error: err
+            })
+          }
+        } else {
+          resolve({
+            title: 'success',
+            message: "reviews saved!"
+          })
+        }
+      });
+    }).catch(error => {
+      console.log(error);
+    });
+  });
+}
+
+function savePlayStoreReviews(appId, region='us') {
+  return new Promise(function(resolve, reject) {
+
+    playStoreApiToucher.getReviewsFor(appId).then((result) => {
+      result = playStoreApiToucher.preanReviewResults(result)
+      reviews = [];
+
+      result.forEach(function(review) {
+        //review_id = md5(review["url"])
+        playStoreReview = new PlayStoreReview({
+          _id: review["id"],
+          appId: appId,
+          rating: review["score"],
+          text: review["text"],
+          date: review["date"],
+          version: "unknown",
+          region: region
+        });
+
+        reviews = reviews.concat(playStoreReview)
+      })
+
+      PlayStoreReview.insertMany(reviews, {ordered: false}, function (err, result) {
         if (err) {
           if (err.code == 11000) {
             resolve({
@@ -69,7 +117,25 @@ function pullAppStoreApps(){
         resolve({
           title: 'error collecting app ids',
           error: err
-        })        
+        })
+      } else {
+        resolve({
+          title: 'success',
+          apps: apps
+        })
+      }
+    });
+  });
+}
+
+function pullPlayStoreApps(){
+  return new Promise(function(resolve, reject) {
+    PlayStoreReview.find().distinct('appId', function(err, apps) {
+      if (err) {
+        resolve({
+          title: 'error collecting app ids',
+          error: err
+        })
       } else {
         resolve({
           title: 'success',
@@ -82,5 +148,7 @@ function pullAppStoreApps(){
 
 module.exports = {
   saveAppStoreReviews: saveAppStoreReviews,
-  pullAppStoreApps: pullAppStoreApps
+  savePlayStoreReviews: savePlayStoreReviews,
+  pullAppStoreApps: pullAppStoreApps,
+  pullPlayStoreApps: pullPlayStoreApps
 };
