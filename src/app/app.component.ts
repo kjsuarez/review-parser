@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm, FormControl } from "@angular/forms";
 import { Subscription } from 'rxjs';
 import { AppService } from './app.service';
 import {PageEvent} from '@angular/material';
+import {MatPaginator, MatTableDataSource} from '@angular/material';
 
 @Component({
   selector: 'app-root',
@@ -10,25 +11,42 @@ import {PageEvent} from '@angular/material';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  @ViewChild(MatPaginator) performancePaginator: MatPaginator;
+  @ViewChild(MatPaginator) powerPaginator: MatPaginator;
+
   title = 'review-parser';
 
   foundApps = [];
   reviews = [];
   viewableReviews = [];
 
+  performancePageIndex = 0;
+  powerPageIndex = 0;
   pageSizeOptions: number[] = [5, 10, 25];
   pageSize = 5;
 
+  visibleKeywords = [
+    "battery", "crash", " load", "server",
+    "drain", " hang", "lag", "fps",
+    "temperature", "frame rate", "cpu", "gpu",
+    " heating", "freeze", "stutter", "resolution",
+    "performance", "responsive"
+  ]
+
   powerReviews = [];
-  viewablePowerReviews = this.powerReviews.slice(0, this.pageSize)
+  relevantPowerReviews = this.powerReviews
+  viewablePowerReviews = this.relevantPowerReviews.slice(0, this.pageSize)
 
   performanceReviews = [];
-  viewablePerformanceReviews = this.performanceReviews.slice(0, this.pageSize)
+  relevantPreformanceReviews = this.performanceReviews
+  viewablePerformanceReviews = this.relevantPreformanceReviews.slice(0, this.pageSize)
 
   keywordStats;
   totalReviewsCollected;
   badReviewCount;
   badReviewPercentage;
+  performanceCount;
+  powerCount;
   performancePercentage;
   powerPercentage;
   userEmail;
@@ -75,11 +93,20 @@ export class AppComponent {
   }
 
   onPowerPage(page){
-    this.viewablePowerReviews = this.powerReviews.slice(page.pageIndex, page.pageIndex + page.pageSize)
+    this.viewablePowerReviews = this.relevantPowerReviews.slice(page.pageIndex, page.pageIndex + page.pageSize)
   }
 
   onPerformancePage(page){
-    this.viewablePerformanceReviews = this.performanceReviews.slice((page.pageIndex*page.pageSize), (page.pageIndex*page.pageSize) + page.pageSize)
+    console.log(page.pageIndex*page.pageSize + " vs " + page.length)
+    if(page.pageIndex*page.pageSize > page.length){
+      console.log("performance index: " + this.performancePageIndex)
+      console.log("page index: " + page.pageIndex)
+      this.performancePageIndex = 0;
+      page.pageIndex = 0
+      console.log("at least this works")
+    }
+    this.viewablePerformanceReviews = this.relevantPreformanceReviews.slice((page.pageIndex*page.pageSize), (page.pageIndex*page.pageSize) + page.pageSize)
+
   }
 
   doApplicationThings(application, region) {
@@ -123,10 +150,10 @@ export class AppComponent {
       this.appService.getRelevantAppStoreReviews(id, region.country)
       .subscribe(response => {
 
-        this.powerReviews = response.power_reviews.reviews;
+        this.powerReviews = this.relevantPowerReviews = response.power_reviews.reviews;
         this.viewablePowerReviews = this.powerReviews.slice(0, this.pageSize)
 
-        this.performanceReviews = response.performance_reviews.reviews;
+        this.performanceReviews = this.relevantPreformanceReviews = response.performance_reviews.reviews;
         this.viewablePerformanceReviews = this.performanceReviews.slice(0, this.pageSize)
       })
     }else{
@@ -178,6 +205,8 @@ export class AppComponent {
         this.badReviewPercentage = response["badReviewPercentage"];
         this.performancePercentage = response["performancePercentage"];
         this.powerPercentage = response["powerPercentage"];
+        this.performanceCount = response["performanceCount"];
+        this.powerCount = response["powerCount"];
         this.thinking = false;
         this.data_recieved = true
       })
@@ -194,9 +223,12 @@ export class AppComponent {
       .subscribe(response => {
         this.keywordStats = response["keywordStats"]
         this.totalReviewsCollected = response["totalReviewsCollected"];
+        this.badReviewCount = response["badReviewCount"];
         this.badReviewPercentage = response["badReviewPercentage"]
         this.performancePercentage = response["performancePercentage"];
         this.powerPercentage = response["powerPercentage"];
+        this.performanceCount = response["performanceCount"];
+        this.powerCount = response["powerCount"];
         this.thinking = false;
         this.data_recieved = true
       })
@@ -225,6 +257,56 @@ export class AppComponent {
   starArray(number) {
     var arry = Array(parseInt(number)).fill("star")
     return arry
+  }
+
+  percentOf(x, y) {
+    return ((x/y)*100).toFixed(2)
+  }
+
+  filterReviewsByKeyword(reviews, keyword) {
+    return reviews.filter(review => review.keywords.includes(keyword))
+  }
+
+  trim(text) {
+    return text.trim();
+  }
+
+  resetPaginator() {
+    this.performancePaginator.length = this.viewablePerformanceReviews.length;
+    setTimeout(()=>{
+      this.performancePaginator.pageIndex = 0;
+    },25)
+    this.performancePaginator.firstPage();
+
+    this.powerPaginator.length = this.viewablePowerReviews.length;
+    setTimeout(()=>{
+      this.powerPaginator.pageIndex = 0;
+    },25)
+    this.powerPaginator.firstPage();
+  }
+
+  resetRelevantReviews() {
+    this.resetPaginator();
+
+    this.relevantPowerReviews = this.powerReviews
+    this.viewablePowerReviews = this.relevantPowerReviews.slice(0, this.pageSize)
+
+    this.relevantPreformanceReviews = this.performanceReviews
+    this.viewablePerformanceReviews = this.relevantPreformanceReviews.slice(0, this.pageSize)
+  }
+
+  selectRelevantReviews(keyword) {
+    //powerReviews = [];
+    this.resetPaginator();
+    console.log("index: " + this.performancePageIndex)
+    this.powerPageIndex = 0;
+    this.performancePageIndex = 0;
+
+    this.relevantPowerReviews = this.filterReviewsByKeyword(this.powerReviews, keyword)
+    this.viewablePowerReviews = this.relevantPowerReviews.slice(0, this.pageSize)
+
+    this.relevantPreformanceReviews = this.filterReviewsByKeyword(this.performanceReviews, keyword);
+    this.viewablePerformanceReviews = this.relevantPreformanceReviews.slice(0, this.pageSize)
   }
 
 }

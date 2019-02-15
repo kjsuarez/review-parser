@@ -44,6 +44,14 @@
   margin-right: 1em;
 }
 
+mat-grid-tile {
+  background: lightblue;
+}
+
+.reset-button {
+  background: lightgreen;
+}
+
 .percentages {
   display: flex;
 }

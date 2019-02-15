@@ -95,7 +95,8 @@ function badReviews(result){
 }
 
 function xPercentOfy(x, y) {
-  return parseInt((x.length/y.length)*100)
+  x = x.length; y = y.length
+  return parseFloat((x/y)*100).toFixed(2)
 }
 
 function filterReviewsByKeywordSet(reviews, keywords) {
