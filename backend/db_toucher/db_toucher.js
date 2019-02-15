@@ -61,7 +61,26 @@ function saveAppStoreReviews(appId, region='us') {
   });
 }
 
+function pullAppStoreApps(){
+  console.log("here I am");
+  return new Promise(function(resolve, reject) {
+    AppStoreReview.find().distinct('appId', function(err, apps) {
+      if (err) {
+        resolve({
+          title: 'error collecting app ids',
+          error: err
+        })        
+      } else {
+        resolve({
+          title: 'success',
+          apps: apps
+        })
+      }
+    });
+  });
+}
 
 module.exports = {
-  saveAppStoreReviews: saveAppStoreReviews
+  saveAppStoreReviews: saveAppStoreReviews,
+  pullAppStoreApps: pullAppStoreApps
 };

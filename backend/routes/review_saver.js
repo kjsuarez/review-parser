@@ -35,10 +35,34 @@ router.post('/update-reviews/:appId/:store', (req, res, next) => {
   } else if (req.params.store == 'play') {
     // playstore saver
   }else{
-
+    return res.status(500).json({
+      title: "illegal store specified",
+      message: ("store: " + req.params.store)
+    });
   }
+});
 
+router.get('/apps/:store/list', (req, res, next) => {
+  if (req.params.store == 'app') {
 
-})
+    dbToucher.pullAppStoreApps().then((result) => {
+      if (result.title == 'success') {
+        return res.status(200).json(result);
+      } else {
+        return res.status(500).json(result);
+      }
+    }).catch(error => {
+      console.log(error);
+    });
+
+  }else if (req.params.store == 'play'){
+
+  } else {
+    return res.status(500).json({
+      title: "illegal store specified",
+      message: ("store: " + req.params.store)
+    });
+  }
+});
 
 module.exports = router;
