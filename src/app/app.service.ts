@@ -94,17 +94,16 @@ export class AppService {
     return this.httpClient.get(BACKEND_URL + 'app-store-api/review-breackdown/' + id, { params })
     .pipe(
       map((response: any) => {
-        this.saveAppStoreReviews(id)
-        .subscribe(response => { console.log(response) })
+        this.saveAppStoreReviews(id).subscribe(response => { console.log(response) })
         return response.obj;
       })
     )
   }
 
-  saveAppStoreReviews() {
+  saveAppStoreReviews(appId, region='us') {
     let params = new HttpParams();
-    // params = params.append('region', region)
-    return this.httpClient.post(BACKEND_URL + 'review-saver/update-all/', { params })
+    params = params.append('region', region)
+    return this.httpClient.post(BACKEND_URL + 'review-saver/update-reviews/' + appId + '/app', { params })
     .pipe(
       map((response: any) => {
         return response;
@@ -112,8 +111,15 @@ export class AppService {
     )
   }
 
-  savePlayStoreReviews() {
-
+  savePlayStoreReviews(appId, region='us') {
+    let params = new HttpParams();
+    params = params.append('region', region)
+    return this.httpClient.post(BACKEND_URL + 'review-saver/update-reviews/' + appId + '/play', { params })
+    .pipe(
+      map((response: any) => {
+        return response;
+      })
+    )
   }
 
   mockAppStoreReviewStats(id){
@@ -133,6 +139,7 @@ export class AppService {
     return this.httpClient.get(BACKEND_URL + 'play-store-api/review-breackdown/' + id, { params })
     .pipe(
       map((response: any) => {
+        this.savePlayStoreReviews(id).subscribe(response => { console.log(response) })
         return response.obj;
       })
     )

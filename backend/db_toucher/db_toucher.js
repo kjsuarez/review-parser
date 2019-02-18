@@ -41,7 +41,7 @@ function saveAppStoreReviews(appId, region='us') {
       AppStoreReview.insertMany(reviews, {ordered: false}, function (err, result) {
         if (err) {
           if (err.code == 11000) {
-            console.log("app store reviews in insert-many: " + reviews.length)
+            // console.log("app store reviews in insert-many: " + reviews.length)
             resolve({
               title: 'success',
               message: 'found app store review duplicates but otherwise fine',
@@ -54,7 +54,7 @@ function saveAppStoreReviews(appId, region='us') {
             })
           }
         } else {
-          console.log("app store reviews in insert-many: " + reviews.length)
+          // console.log("app store reviews in insert-many: " + reviews.length)
           resolve({
             title: 'success',
             message: "reviews saved!",
