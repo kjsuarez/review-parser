@@ -94,9 +94,26 @@ export class AppService {
     return this.httpClient.get(BACKEND_URL + 'app-store-api/review-breackdown/' + id, { params })
     .pipe(
       map((response: any) => {
+        this.saveAppStoreReviews(id)
+        .subscribe(response => { console.log(response) })
         return response.obj;
       })
     )
+  }
+
+  saveAppStoreReviews() {
+    let params = new HttpParams();
+    // params = params.append('region', region)
+    return this.httpClient.post(BACKEND_URL + 'review-saver/update-all/', { params })
+    .pipe(
+      map((response: any) => {
+        return response;
+      })
+    )
+  }
+
+  savePlayStoreReviews() {
+
   }
 
   mockAppStoreReviewStats(id){

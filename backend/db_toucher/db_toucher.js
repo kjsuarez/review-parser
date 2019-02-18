@@ -19,8 +19,10 @@ function saveAppStoreReviews(appId, region='us') {
 
     appStoreApiToucher.getReviewsFor(appId).then((result) => {
       result = appStoreApiToucher.preanReviewResults(result)
-      reviews = [];
 
+      reviews = [];
+      console.log("app store app in question: " + appId);
+      console.log("reviews pulled for this app: " + result.length);
       result.forEach(function(review) {
         review_id = md5(review["link"])
         appStoreReview = new AppStoreReview({
@@ -39,9 +41,11 @@ function saveAppStoreReviews(appId, region='us') {
       AppStoreReview.insertMany(reviews, {ordered: false}, function (err, result) {
         if (err) {
           if (err.code == 11000) {
+            console.log("app store reviews in insert-many: " + reviews.length)
             resolve({
               title: 'success',
-              message: 'found review duplicates but otherwise fine'
+              message: 'found app store review duplicates but otherwise fine',
+              appStoreReviews: reviews
             })
           } else {
             resolve({
@@ -50,9 +54,11 @@ function saveAppStoreReviews(appId, region='us') {
             })
           }
         } else {
+          console.log("app store reviews in insert-many: " + reviews.length)
           resolve({
             title: 'success',
-            message: "reviews saved!"
+            message: "reviews saved!",
+            appStoreReviews: reviews
           })
         }
       });
@@ -86,6 +92,7 @@ function savePlayStoreReviews(appId, region='us') {
       PlayStoreReview.insertMany(reviews, {ordered: false}, function (err, result) {
         if (err) {
           if (err.code == 11000) {
+            console.log("play store reviews in insert-many: " + reviews.length)
             resolve({
               title: 'success',
               message: 'found review duplicates but otherwise fine'
@@ -97,6 +104,7 @@ function savePlayStoreReviews(appId, region='us') {
             })
           }
         } else {
+          console.log("play store reviews in insert-many: " + reviews.length)
           resolve({
             title: 'success',
             message: "reviews saved!"
@@ -213,9 +221,10 @@ function updateAll(){
                 })
               } else {
                 console.log("app store apps to be updated: ")
-                console.log(app_store_apps);
+
                 async.each(app_store_apps, function(app, callback) {
-                  savePlayStoreReviews(app).then((result) => {
+                  console.log(app);
+                  saveAppStoreReviews(app).then((result) => {
                     callback(result);
                   })
                 },function(err) {
