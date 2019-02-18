@@ -69,4 +69,38 @@ router.get('/apps/:store/list', (req, res, next) => {
   }
 });
 
+router.get('/apps/:appId/:store/list', (req, res, next) => {
+  if (req.params.store == 'app') {
+
+    dbToucher.pullAppStoreAppReviews(req.params.appId).then((result) => {
+      return res.status(result.title == 'success' ? 200 : 500).json(result);
+    }).catch(error => {
+      console.log(error);
+    });
+
+  }else if (req.params.store == 'play'){
+    dbToucher.pullPlayStoreAppReviews(req.params.appId).then((result) => {
+      return res.status(result.title == 'success' ? 200 : 500).json(result);
+    }).catch(error => {
+      console.log(error);
+    });
+  } else {
+    return res.status(500).json({
+      title: "illegal store specified",
+      message: ("store: " + req.params.store)
+    });
+  }
+});
+
+router.post('/update-all', (req, res, next) => {
+
+  dbToucher.updateAll().then((result) => {
+    return res.status(result.title == 'success' ? 200 : 500).json(result);
+  }).catch(error => {
+    console.log(error);
+  });
+
+
+});
+
 module.exports = router;

@@ -5,6 +5,7 @@ var appScraper = require('app-store-scraper');
 var gplay = require('google-play-scraper');
 var playStoreApiToucher = require('../api_toucher/play_store_api')
 var md5 = require('md5');
+var async = require('async');
 
 const appStoreApiToucher = require('../api_toucher/app_store_api')
 var resultFilter = require('../filters/review_filters')
@@ -67,14 +68,13 @@ function savePlayStoreReviews(appId, region='us') {
     playStoreApiToucher.getReviewsFor(appId).then((result) => {
       result = playStoreApiToucher.preanReviewResults(result)
       reviews = [];
-
       result.forEach(function(review) {
-        //review_id = md5(review["url"])
+        review_id = md5(review["link"])
         playStoreReview = new PlayStoreReview({
-          _id: review["id"],
+          _id: review_id,
           appId: appId,
-          rating: review["score"],
-          text: review["text"],
+          rating: review["rating"],
+          text: review["content"],
           date: review["date"],
           version: "unknown",
           region: region
@@ -110,7 +110,6 @@ function savePlayStoreReviews(appId, region='us') {
 }
 
 function pullAppStoreApps(){
-  console.log("here I am");
   return new Promise(function(resolve, reject) {
     AppStoreReview.find().distinct('appId', function(err, apps) {
       if (err) {
@@ -146,9 +145,106 @@ function pullPlayStoreApps(){
   });
 }
 
+function pullAppStoreAppReviews(appId) {
+  return new Promise(function(resolve, reject) {
+    AppStoreReview.find({appId: appId}, function(err, reviews) {
+      if (err) {
+        resolve({
+          title: 'error collecting app ids',
+          error: err
+        })
+      } else {
+        resolve({
+          title: 'success',
+          apps: reviews
+        })
+      }
+    });
+  });
+}
+
+function pullPlayStoreAppReviews(appId) {
+  return new Promise(function(resolve, reject) {
+    PlayStoreReview.find({appId: appId}, function(err, reviews) {
+      if (err) {
+        resolve({
+          title: 'error collecting app ids',
+          error: err
+        })
+      } else {
+        resolve({
+          title: 'success',
+          apps: reviews
+        })
+      }
+    });
+  });
+}
+
+
+function updateAll(){
+  return new Promise(function(resolve, reject) {
+
+    PlayStoreReview.find().distinct('appId', function(play_err, play_store_apps) {
+      if (play_err) {
+        resolve({
+          title: 'error collecting app ids',
+          error: play_err
+        })
+      } else {
+        console.log("play store apps to be updated: ")
+        console.log(play_store_apps);
+        async.each(play_store_apps, function(app, callback) {
+          savePlayStoreReviews(app).then((result) => {
+            callback(result);
+          })
+        }, function(err) {
+            if( play_err ) {
+              resolve({
+                title: 'error',
+                apps: err
+              })
+            }
+            AppStoreReview.find().distinct('appId', function(app_err, app_store_apps) {
+              if (app_err) {
+                resolve({
+                  title: 'error collecting app ids',
+                  error: play_err
+                })
+              } else {
+                console.log("app store apps to be updated: ")
+                console.log(app_store_apps);
+                async.each(app_store_apps, function(app, callback) {
+                  savePlayStoreReviews(app).then((result) => {
+                    callback(result);
+                  })
+                },function(err) {
+
+                    if( err ) {
+                      resolve(err.title == 'success' ? { title: 'success', apps: err } :
+                                                       { title: 'error', apps: err });
+                    }else{
+                      resolve({
+                        title: 'made it',
+                        apps: play_store_apps.concat(app_store_apps)
+                      })
+                    }
+                  })
+              }
+
+            })
+        });
+      }
+    });
+  });
+}
+
 module.exports = {
   saveAppStoreReviews: saveAppStoreReviews,
   savePlayStoreReviews: savePlayStoreReviews,
   pullAppStoreApps: pullAppStoreApps,
-  pullPlayStoreApps: pullPlayStoreApps
+  pullPlayStoreApps: pullPlayStoreApps,
+  pullAppStoreAppReviews: pullAppStoreAppReviews,
+  pullPlayStoreAppReviews: pullPlayStoreAppReviews,
+  updateAll: updateAll
 };
