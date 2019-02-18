@@ -93,14 +93,11 @@ router.get('/apps/:appId/:store/list', (req, res, next) => {
 });
 
 router.post('/update-all', (req, res, next) => {
-
   dbToucher.updateAll().then((result) => {
     return res.status(result.title == 'success' ? 200 : 500).json(result);
   }).catch(error => {
     console.log(error);
   });
-
-
 });
 
 module.exports = router;
