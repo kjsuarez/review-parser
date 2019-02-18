@@ -70,7 +70,8 @@ function saveAppStoreReviews(appId, region='us') {
 
 function savePlayStoreReviews(appId, region='us') {
   return new Promise(function(resolve, reject) {
-
+    console.log("inside savePlayStoreReviews, appId:");
+    console.log(appId);
     playStoreApiToucher.getReviewsFor(appId).then((result) => {
       result = playStoreApiToucher.preanReviewResults(result)
       reviews = [];
@@ -88,7 +89,7 @@ function savePlayStoreReviews(appId, region='us') {
 
         reviews = reviews.concat(playStoreReview)
       })
-
+      console.log("still inside savePlayStoreReviews");
       PlayStoreReview.insertMany(reviews, {ordered: false}, function (err, result) {
         if (err) {
           if (err.code == 11000) {
@@ -247,6 +248,59 @@ function updateAll(){
   });
 }
 
+function updateTheseApps(apps, store) {
+  return new Promise(function(resolve, reject) {
+    async.each(apps, function(app, callback) {
+      if (store == "app") {
+        saveAppStoreReviews(app).then((result) => {
+          callback(result);
+        })
+      }else{
+        console.log("before savePlayStoreReviews");
+        savePlayStoreReviews(app.appId).then((result) => {
+          console.log("after savePlayStoreReviews");
+          callback(result);
+        })
+      }
+    },function(err) {
+      if( err ) {
+        console.log("error output:");
+        console.log(err.title == 'success' ? { title: 'success', apps: err } :
+                                         { title: 'error', apps: err });
+
+        resolve(err.title == 'success' ? { title: 'success', apps: err } :
+                                         { title: 'error', apps: err });
+      }else{
+        resolve({
+          apps
+        })
+      }
+    })
+  })
+}
+
+function updateTopApps() {
+  return new Promise(function(resolve, reject) {
+    playStoreApiToucher.getPopularApps().then((playStoreApps) => {
+      console.log("play store apps: " + playStoreApps.length);
+      updateTheseApps(playStoreApps, 'play').then((playResult) => {
+        // appStoreApiToucher.getPopularApps().then((appStoreApps) => {
+        //   updateTheseApps(appStoreApps, 'app').then((appResult) => {
+        //     resolve({
+        //       title: 'success',
+        //       apps: playStoreApps.concat(appStoreApps)
+        //     })
+        //   })
+        // })
+        resolve({
+              title: 'success',
+              apps: playStoreApps
+            })
+      })
+    })
+  });
+}
+
 module.exports = {
   saveAppStoreReviews: saveAppStoreReviews,
   savePlayStoreReviews: savePlayStoreReviews,
@@ -254,5 +308,6 @@ module.exports = {
   pullPlayStoreApps: pullPlayStoreApps,
   pullAppStoreAppReviews: pullAppStoreAppReviews,
   pullPlayStoreAppReviews: pullPlayStoreAppReviews,
+  updateTopApps: updateTopApps,
   updateAll: updateAll
 };

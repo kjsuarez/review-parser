@@ -4,6 +4,8 @@ var express = require('express');
 const fs = require('fs');
 var async = require('async');
 
+var storeScraper = require('app-store-scraper');
+
 function getReviewsFor(id, region='us') {
   return new Promise(function(resolve, reject) {
     var out_of_reviews = false
@@ -59,11 +61,27 @@ function narrowResult(keyword, results) {
   return results
 }
 
+function getPopularApps() {
+  return new Promise(function(resolve, reject) {
+    storeScraper.list({
+      collection: storeScraper.collection.TOP_FREE_IOS,
+      category: storeScraper.category.GAMES,
+      num: 200
+    })
+    .then((result) => {
+      resolve(result) 
+    })
+    .catch(console.log);
+  })
+
+}
+
 
 
 module.exports = {
   getReviewsFor: getReviewsFor,
   preanSearchResults: preanSearchResults,
   narrowResult: narrowResult,
+  getPopularApps: getPopularApps,
   preanReviewResults: preanReviewResults
 };

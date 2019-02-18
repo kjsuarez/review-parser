@@ -28,7 +28,7 @@ const app = express();
 
 // Update existing db reviews every day at 8am
 cron.schedule("* 8 * * *", function() {
-  console.log("running a task every minute");
+  console.log("updating reviews:");
   dbToucher.updateAll().then((result) => {
     console.log(result);
   }).catch(error => {

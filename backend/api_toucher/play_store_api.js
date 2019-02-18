@@ -116,10 +116,64 @@ function getPageOfReviews(id, page, language='en') {
   });
 }
 
+function getPageOfPopApps(index=0) {
+  num = 120
+  console.log("I made it this far");
+  return gplay.list({
+    category: gplay.category.GAME_ACTION,
+    collection: gplay.collection.TOP_FREE,
+    num: num,
+    start: index
+  })
+
+}
+
+function getPopularApps() {
+  var out_of_reviews = false
+  var output = []
+  var count = 0;
+
+  return new Promise(function(resolve, reject) {
+    // getPageOfPopApps(count).then((result) => {
+    //   console.log("result of getPageOfPopApps: " + result.length);
+    //   if (result.length > 0) {
+    //     output = output.concat(result)
+    //   }else{
+    //     out_of_reviews = true;
+    //   }
+    //   resolve(result)
+    // })
+    // .catch(error => {
+    //   console.log(error);
+    // });
+
+    async.times(8, function(count, callback) {
+      getPageOfPopApps(count).then((result) => {
+        if (result.length > 0) {
+          output = output.concat(result)
+        }else{
+          out_of_reviews = true;
+        }
+        callback(null, count);
+      }).catch(error => {
+        console.log(error);
+      })
+    }, function(err, users) {
+      if (err) {
+        console.log(err);
+        return resolve([])
+      }else {
+        console.log(output.length);
+        return resolve(output)
+      }
+    });
+  })
+}
 
 
 module.exports = {
   getReviewsFor: getReviewsFor,
   preanSearchResults: preanSearchResults,
-  preanReviewResults: preanReviewResults
+  preanReviewResults: preanReviewResults,
+  getPopularApps: getPopularApps
 };
