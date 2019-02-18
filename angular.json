@@ -50,7 +50,9 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "review-parser:build"
+            "browserTarget": "review-parser:build",
+	    "port": 4321,
+	    "host": "0.0.0.0"
           },
           "configurations": {
             "production": {
