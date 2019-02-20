@@ -69,6 +69,7 @@ export class AppComponent {
   selectedRegion = {code: "us", country: "US", language: "en"};
 
   emailCardVisible = false;
+  relevantReviewsDirty = false;
 
   constructor(private appService: AppService) {}
 
@@ -99,13 +100,9 @@ export class AppComponent {
   }
 
   onPerformancePage(page){
-    console.log(page.pageIndex*page.pageSize + " vs " + page.length)
     if(page.pageIndex*page.pageSize > page.length){
-      console.log("performance index: " + this.performancePageIndex)
-      console.log("page index: " + page.pageIndex)
       this.performancePageIndex = 0;
       page.pageIndex = 0
-      console.log("at least this works")
     }
     this.viewablePerformanceReviews = this.relevantPreformanceReviews.slice((page.pageIndex*page.pageSize), (page.pageIndex*page.pageSize) + page.pageSize)
 
@@ -199,8 +196,6 @@ export class AppComponent {
     if(this.searchContext == "appStore"){
       this.appService.getAppStoreReviewStats(id)
       .subscribe(response => {
-        console.log("review stats ")
-        console.log(response)
         this.keywordStats = response["keywordStats"]
         this.totalReviewsCollected = response["totalReviewsCollected"];
         this.badReviewCount = response["badReviewCount"];
@@ -219,8 +214,6 @@ export class AppComponent {
       // this.powerPercentage = response["powerPercentage"];
       // this.thinking = false;
     }else{
-      console.log("region in component:")
-      console.log(region)
       this.appService.getPlayStoreReviewStats(id, region.language)
       .subscribe(response => {
         this.keywordStats = response["keywordStats"]
@@ -240,8 +233,6 @@ export class AppComponent {
   submitEmail(email) {
     this.appService.sendEmail(email)
     .subscribe((response: any) => {
-      console.log("email response: ")
-      console.log(response)
       if(response.status == 200) {
         localStorage.setItem('email', email);
 
@@ -296,17 +287,22 @@ export class AppComponent {
   }
 
   resetRelevantReviews() {
-    this.resetPaginator();
+    if(this.relevantReviewsDirty) {
+      this.relevantReviewsDirty = false
 
-    this.relevantPowerReviews = this.powerReviews
-    this.viewablePowerReviews = this.relevantPowerReviews.slice(0, this.pageSize)
+      this.relevantPowerReviews = this.powerReviews
+      this.viewablePowerReviews = this.relevantPowerReviews.slice(0, this.pageSize)
 
-    this.relevantPreformanceReviews = this.performanceReviews
-    this.viewablePerformanceReviews = this.relevantPreformanceReviews.slice(0, this.pageSize)
+      this.relevantPreformanceReviews = this.performanceReviews
+      this.viewablePerformanceReviews = this.relevantPreformanceReviews.slice(0, this.pageSize)
+
+      this.resetPaginator();
+    }
   }
 
   selectRelevantReviews(keyword) {
-    //powerReviews = [];
+
+    this.relevantReviewsDirty = true
     this.resetPaginator();
     this.powerPageIndex = 0;
     this.performancePageIndex = 0;

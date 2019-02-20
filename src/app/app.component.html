@@ -55,21 +55,6 @@
       <button mat-button color="primary" [disabled]="!validEmail(userEmail)" (click)="submitEmail(userEmail)">submit</button>
     </mat-card>
 
-    <!-- <mat-accordion *ngIf="!this.sent_email && data_recieved">
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title> learn more </mat-panel-title>
-          <mat-panel-description> Give us your email plz </mat-panel-description>
-        </mat-expansion-panel-header>
-        <mat-form-field>
-          <input matInput [(ngModel)]="userEmail" name="userEmail" placeholder="email">
-        </mat-form-field>
-        <mat-action-row>
-          <button mat-button color="primary" [disabled]="!validEmail(userEmail)" (click)="submitEmail(userEmail)">submit</button>
-        </mat-action-row>
-      </mat-expansion-panel>
-    </mat-accordion> -->
-
     <div *ngIf="data_recieved" class="reviews">
       <div class="review-column-1">
         <h3 *ngIf="powerReviews.length == 0 && this.sent_email"> No bad reviews related to Power 🙂 </h3>
