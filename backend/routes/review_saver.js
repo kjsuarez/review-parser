@@ -101,7 +101,7 @@ router.post('/update-all', (req, res, next) => {
 });
 
 
-router.post('/update-top-apps', (req, res, next) => {
+router.get('/update-top-apps', (req, res, next) => {
   dbToucher.updateTopApps().then((result) => {
     return res.status(result.title == 'success' ? 200 : 500).json(result);
   }).catch(error => {

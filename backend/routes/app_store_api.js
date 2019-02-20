@@ -25,7 +25,7 @@ router.get('/itunes-affiliate-search/:keyword', function (req, res, next) {
   	query: {
   		entity: 'software',
       country: (req.query.region || 'us'),
-  		limit: 10
+  		limit: 2
   	}
   };
 

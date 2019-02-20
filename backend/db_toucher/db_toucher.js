@@ -65,13 +65,13 @@ function saveAppStoreReviews(appId, region='us') {
     }).catch(error => {
       console.log(error);
     });
-  });
+  }).catch((err) => {
+    console.log(err);
+  })
 }
 
 function savePlayStoreReviews(appId, region='us') {
   return new Promise(function(resolve, reject) {
-    console.log("inside savePlayStoreReviews, appId:");
-    console.log(appId);
     playStoreApiToucher.getReviewsFor(appId).then((result) => {
       result = playStoreApiToucher.preanReviewResults(result)
       reviews = [];
@@ -99,7 +99,7 @@ function savePlayStoreReviews(appId, region='us') {
               message: 'found review duplicates but otherwise fine'
             })
           } else {
-            resolve({
+            reject({
               title: 'Something went pear shaped trying to save review',
               error: err
             })
@@ -257,19 +257,20 @@ function updateTheseApps(apps, store) {
         })
       }else{
         console.log("before savePlayStoreReviews");
-        savePlayStoreReviews(app.appId).then((result) => {
+        savePlayStoreReviews(app.appId).then((result, err123) => {
           console.log("after savePlayStoreReviews");
-          callback(result);
+          if (err123) {
+            console.log("ERROR - JAKE");
+          }
+          callback();
         })
       }
-    },function(err) {
-      if( err ) {
+    }, function(err) {
+      console.log("Finished updating these apps");
+      if( err && err.title != 'success' ) {
         console.log("error output:");
-        console.log(err.title == 'success' ? { title: 'success', apps: err } :
-                                         { title: 'error', apps: err });
 
-        resolve(err.title == 'success' ? { title: 'success', apps: err } :
-                                         { title: 'error', apps: err });
+        reject(err);
       }else{
         resolve({
           apps
@@ -277,28 +278,139 @@ function updateTheseApps(apps, store) {
       }
     })
   })
+  .catch(err => {
+    console.log(err)
+    reject(err);
+  })
+}
+
+function formatAsAppStoreReviewObjectArray(array) {
+  array = array.map(review => {
+    review_id = md5(review["link"])
+    // review["link"] == "https://itunes.apple.com/us/reviews/id660481280"
+    appId = review["link"].substring( review["link"].lastIndexOf("id") + 2);
+    return new PlayStoreReview({
+      _id: review_id,
+      appId: appId,
+      rating: review["rating"],
+      text: review["content"],
+      date: Date.now().toString(),
+      version: review["version"],
+      region: 'us'
+    });
+  })
+  return array
+}
+
+function formatAsPlayStoreReviewObjectArray(array) {
+  array = array.map(review => {
+    review_id = md5(review["link"])
+    appId = review["link"].substring(
+      review["link"].indexOf("=") + 1,
+      review["link"].indexOf("&")
+    );
+    return new PlayStoreReview({
+      _id: review_id,
+      appId: appId,
+      rating: review["rating"],
+      text: review["content"],
+      date: review["date"],
+      version: "unknown",
+      region: 'us'
+    });
+  })
+  return array
+}
+
+
+function addTheseAppStoreReviews(reviews) {
+  return new Promise(function (resolve, reject) {
+    AppStoreReview.insertMany(reviews, {ordered: false}, function (err, result) {
+      if (err) {
+        if (err.code == 11000) {
+          // console.log("play store reviews in insert-many: " + reviews.length)
+          resolve({
+            title: 'success',
+            message: 'found review duplicates but otherwise fine'
+          })
+        } else {
+          reject({
+            title: 'Something went pear shaped trying to save review',
+            error: err
+          })
+        }
+      } else {
+        // console.log("play store reviews in insert-many: " + reviews.length)
+        resolve({
+          title: 'success',
+          message: "reviews saved!"
+        })
+      }
+    })
+  })
+}
+
+function addThesePlayStoreReviews(reviews) {
+  return new Promise(function(resolve, reject) {
+    PlayStoreReview.insertMany(reviews, {ordered: false}, function (err, result) {
+      if (err) {
+        if (err.code == 11000) {
+          // console.log("play store reviews in insert-many: " + reviews.length)
+          resolve({
+            title: 'success',
+            message: 'found review duplicates but otherwise fine'
+          })
+        } else {
+          reject({
+            title: 'Something went pear shaped trying to save review',
+            error: err
+          })
+        }
+      } else {
+        // console.log("play store reviews in insert-many: " + reviews.length)
+        resolve({
+          title: 'success',
+          message: "reviews saved!"
+        })
+      }
+    });
+  })
 }
 
 function updateTopApps() {
   return new Promise(function(resolve, reject) {
-    playStoreApiToucher.getPopularApps().then((playStoreApps) => {
+    playStoreApiToucher.getPopularApps()
+    .then((playStoreApps) => {
       console.log("play store apps: " + playStoreApps.length);
-      updateTheseApps(playStoreApps, 'play').then((playResult) => {
-        // appStoreApiToucher.getPopularApps().then((appStoreApps) => {
-        //   updateTheseApps(appStoreApps, 'app').then((appResult) => {
-        //     resolve({
-        //       title: 'success',
-        //       apps: playStoreApps.concat(appStoreApps)
-        //     })
-        //   })
-        // })
-        resolve({
-              title: 'success',
-              apps: playStoreApps
+      playStoreApiToucher.getReviewsForTheseApps(playStoreApps)
+      .then((reviews) => {
+        reviews = playStoreApiToucher.preanReviewResults(reviews)
+        console.log("pulled reviews for play store apps");
+
+        reviews = formatAsPlayStoreReviewObjectArray(reviews)
+        addThesePlayStoreReviews().then((playDbResult) => {
+          console.log("play reviews added to db");
+
+          appStoreApiToucher.getPopularApps()
+          .then((appStoreApps) => {
+            console.log("appstore apps: " + appStoreApps.length);
+            appStoreApiToucher.getReviewsForTheseApps(appStoreApps)
+            .then((appReviews) => {
+              console.log("pulled reviews for app store apps");
+              appReviews = formatAsAppStoreReviewObjectArray(appReviews)
+              addTheseAppStoreReviews()
+              .then((appDbResult) => {
+                console.log("Appstore reviews added to db");
+                resolve({appStoreReviews: appDbResult, playStoreReviews: playDbResult})
+              })
             })
+          })
+        })
       })
     })
-  });
+  }).catch((err) => {
+    console.log(err)
+  })
 }
 
 module.exports = {
