@@ -57,7 +57,7 @@
 
     <div *ngIf="data_recieved" class="reviews">
       <div class="review-column-1">
-        <h3 *ngIf="powerReviews.length == 0 && this.sent_email"> No bad reviews related to Power 🙂 </h3>
+        <h3 *ngIf="powerReviews.length == 0 && this.sent_email"> No bad reviews related to Power 👍 </h3>
         <mat-paginator #powerPaginator
                       *ngIf="relevantPowerReviews.length > 0"
                       [length]="relevantPowerReviews.length"
@@ -81,7 +81,7 @@
       </div>
 
       <div class="review-column-2">
-        <h3 *ngIf="performanceReviews.length == 0 && this.sent_email"> No bad reviews related to Preformance 🙂 </h3>
+        <h3 *ngIf="performanceReviews.length == 0 && this.sent_email"> No bad reviews related to Preformance 👍 </h3>
         <mat-paginator #performancePaginator
                        *ngIf="relevantPreformanceReviews.length > 0"
                        [length]="relevantPreformanceReviews.length"
