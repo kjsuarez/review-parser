@@ -68,6 +68,8 @@ export class AppComponent {
   ];
   selectedRegion = {code: "us", country: "US", language: "en"};
 
+  emailCardVisible = false;
+
   constructor(private appService: AppService) {}
 
   ngOnInit() {
@@ -272,17 +274,25 @@ export class AppComponent {
   }
 
   resetPaginator() {
-    this.performancePaginator.length = this.viewablePerformanceReviews.length;
-    setTimeout(()=>{
-      this.performancePaginator.pageIndex = 0;
-    },25)
-    this.performancePaginator.firstPage();
+    if(this.performancePaginator){
+      this.performancePaginator.length = this.viewablePerformanceReviews.length;
+      setTimeout(()=>{
+        if(this.performancePaginator){
+          this.performancePaginator.pageIndex = 0;
+        }
+      },25)
+      this.performancePaginator.firstPage();
+    }
 
-    this.powerPaginator.length = this.viewablePowerReviews.length;
-    setTimeout(()=>{
-      this.powerPaginator.pageIndex = 0;
-    },25)
-    this.powerPaginator.firstPage();
+    if(this.powerPaginator){
+      this.powerPaginator.length = this.viewablePowerReviews.length;
+      setTimeout(()=>{
+        if(this.powerPaginator){
+          this.powerPaginator.pageIndex = 0;
+        }
+      },25)
+      this.powerPaginator.firstPage();
+    }
   }
 
   resetRelevantReviews() {
@@ -298,7 +308,6 @@ export class AppComponent {
   selectRelevantReviews(keyword) {
     //powerReviews = [];
     this.resetPaginator();
-    console.log("index: " + this.performancePageIndex)
     this.powerPageIndex = 0;
     this.performancePageIndex = 0;
 
@@ -307,6 +316,10 @@ export class AppComponent {
 
     this.relevantPreformanceReviews = this.filterReviewsByKeyword(this.performanceReviews, keyword);
     this.viewablePerformanceReviews = this.relevantPreformanceReviews.slice(0, this.pageSize)
+  }
+
+  toggleEmailCard() {
+    this.emailCardVisible = !this.emailCardVisible
   }
 
 }

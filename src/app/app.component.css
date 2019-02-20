@@ -45,7 +45,11 @@
 }
 
 mat-grid-tile {
-  background: lightblue;
+}
+
+.keyword-tile {
+  text-align: center;
+  cursor: pointer;
 }
 
 .reset-button {
@@ -64,6 +68,10 @@ mat-grid-tile {
   font-size: 500%;
   text-align: center;
   margin-top: 0;
+}
+
+.email-card {
+  display: flex;
 }
 
 .reviews {
