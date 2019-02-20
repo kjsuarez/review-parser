@@ -23,15 +23,15 @@ router.get('/itunes-affiliate-search/:keyword', function (req, res, next) {
 
   const opts = {
   	query: {
-  		entity: 'software',
+  		entity: 'iPadSoftware',
       country: (req.query.region || 'us'),
-  		limit: 2
+  		limit: 20
   	}
   };
 
   itunesSearchApi(req.params.keyword, opts).then(result => {
     result = appStoreApiToucher.preanSearchResults(result)
-    result = appStoreApiToucher.narrowResult(req.params.keyword, result)
+    // result = appStoreApiToucher.narrowResult(req.params.keyword, result)
     res.status(200).json({
       message: 'success',
       obj: result
