@@ -4,6 +4,8 @@ var express = require('express');
 const fs = require('fs');
 var async = require('async');
 
+var storeScraper = require('app-store-scraper');
+
 function getReviewsFor(id, region='us') {
   return new Promise(function(resolve, reject) {
     var out_of_reviews = false
@@ -18,6 +20,14 @@ function getReviewsFor(id, region='us') {
           out_of_reviews = true;
         }
         callback(null, count);
+      }).catch(err => {
+        console.log("***LOOK AT ME***")
+        console.log(err.statusCode);
+        console.log(err.message);
+        if (err.statusCode == 403) {
+          console.log("itunes rss is rejecting further review page requests")
+        }
+        resolve(output)
       });
     }, function(err, users) {
       if (err) {
@@ -59,11 +69,59 @@ function narrowResult(keyword, results) {
   return results
 }
 
+function getPopularApps() {
+  return new Promise(function(resolve, reject) {
+    storeScraper.list({
+      collection: storeScraper.collection.TOP_FREE_IOS,
+      category: storeScraper.category.GAMES,
+      num: 200
+    })
+    .then((result) => {
+      resolve(result)
+    })
+    .catch(console.log);
+  })
+}
+
+function getReviewsForTheseApps(apps) {
+  reviews = [];
+  return new Promise(function(resolve, reject) {
+    async.eachOfSeries(apps, function(app, index, callback) {
+
+      getReviewsFor(app.id)
+      .then((thisAppsReviews) => {
+        thisAppsReviews = preanReviewResults(thisAppsReviews)
+        reviews = reviews.concat(thisAppsReviews)
+        setTimeout(()=> {
+          console.log((index +1) +" of "+ apps.length);
+          callback();
+        },(1000))
+      }).catch(err => {
+        console.log("***ERROR IN getReviewsForTheseApps***")
+        console.log(err);
+      });
+
+    }, function(err) {
+        if( err ) {
+          console.log(err);
+          reject(err)
+        } else {
+          // console.log("total reviews length: " + reviews.length);
+          resolve(reviews)
+        }
+    });
+  }).catch(error => {
+    console.log(error);
+  });
+}
+
 
 
 module.exports = {
   getReviewsFor: getReviewsFor,
   preanSearchResults: preanSearchResults,
   narrowResult: narrowResult,
-  preanReviewResults: preanReviewResults
+  getPopularApps: getPopularApps,
+  preanReviewResults: preanReviewResults,
+  getReviewsForTheseApps: getReviewsForTheseApps
 };

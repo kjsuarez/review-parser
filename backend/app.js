@@ -2,6 +2,8 @@ const express = require('express');
 const path = require("path");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
+const cron = require("node-cron");
+var dbToucher = require('./db_toucher/db_toucher')
 
 //remote server via mongo atlas
 //mongoose.connect('mongodb+srv://kjsuarez:' + process.env.MONGO_ATLAS_PW + '@anothertextadventure-ddkor.mongodb.net/text-adventure-db?retryWrites=true')
@@ -20,8 +22,19 @@ mongoose.connect(process.env.DATABASE_URL)
 
 const appStoreRoutes = require('./routes/app_store_api');
 const playStoreRoutes = require('./routes/play_store_api');
+const reviewSaverRoutes = require('./routes/review_saver');
 
 const app = express();
+
+// Update existing db reviews every day at 8am
+cron.schedule("* 8 * * *", function() {
+  console.log("updating reviews:");
+  dbToucher.updateAll().then((result) => {
+    console.log(result);
+  }).catch(error => {
+    console.log(error);
+  });
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -41,5 +54,6 @@ app.use((req, res, next) => {
 
 app.use('/app-store-api', appStoreRoutes);
 app.use('/play-store-api', playStoreRoutes);
+app.use('/review-saver', reviewSaverRoutes);
 
 module.exports = app;
