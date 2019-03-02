@@ -397,12 +397,16 @@ function updateTopApps() {
             appStoreApiToucher.getReviewsForTheseApps(appStoreApps)
             .then((appReviews) => {
               console.log("pulled reviews for app store apps");
+              console.log(appReviews[0])
               appReviews = formatAsAppStoreReviewObjectArray(appReviews)
               addTheseAppStoreReviews()
               .then((appDbResult) => {
                 console.log("Appstore reviews added to db");
                 resolve({appStoreReviews: appDbResult, playStoreReviews: playDbResult})
               })
+            }).catch((err) => {
+              console.log("***error after pulling appstore reviews***");
+              console.log(err)
             })
           })
         })

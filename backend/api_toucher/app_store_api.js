@@ -11,7 +11,7 @@ function getReviewsFor(id, region='us') {
     var out_of_reviews = false
     var output = []
 
-    async.times(10, function(count, callback) {
+    async.timesSeries(10, function(count, callback) {
       getPageOfReviews(id, region, count + 1).then((result) => {
         data = JSON.parse(result)
         if (data["feed"]["entry"]) {
@@ -21,16 +21,21 @@ function getReviewsFor(id, region='us') {
         }
         callback(null, count);
       }).catch(err => {
-        console.log("***LOOK AT ME***")
-        console.log(err.statusCode);
-        console.log(err.message);
         if (err.statusCode == 403) {
-          console.log("itunes rss is rejecting further review page requests")
+          console.log("***403 on review page requests, take a long break***")
+          setTimeout(()=> {
+            callback();
+          },(200000))
+        }else{
+          console.log("***LOOK AT ME***")
+          console.log(err.statusCode);
+          console.log(err.message);
+          resolve(output)
         }
-        resolve(output)
       });
     }, function(err, users) {
       if (err) {
+        console.log("error in 'getReviewsFor'")
         console.log(err);
         resolve([])
       }else {
@@ -74,12 +79,14 @@ function getPopularApps() {
     storeScraper.list({
       collection: storeScraper.collection.TOP_FREE_IOS,
       category: storeScraper.category.GAMES,
-      num: 200
+      num: 60
     })
     .then((result) => {
       resolve(result)
-    })
-    .catch(console.log);
+    }).catch(err => {
+      console.log("***ERROR in getPopularApps***")
+      console.log(err);
+    });
   })
 }
 
@@ -95,7 +102,7 @@ function getReviewsForTheseApps(apps) {
         setTimeout(()=> {
           console.log((index +1) +" of "+ apps.length);
           callback();
-        },(1000))
+        },(1500))
       }).catch(err => {
         console.log("***ERROR IN getReviewsForTheseApps***")
         console.log(err);
