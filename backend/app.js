@@ -9,14 +9,14 @@ var dbToucher = require('./db_toucher/db_toucher')
 //mongoose.connect('mongodb+srv://kjsuarez:' + process.env.MONGO_ATLAS_PW + '@anothertextadventure-ddkor.mongodb.net/text-adventure-db?retryWrites=true')
 
 //local server via $ mongod
-mongoose.connect(process.env.DATABASE_URL)
-
-.then(() => {
-    console.log("Connected to database!");
-  })
-  .catch(() => {
-    console.log("Connection failed!");
-  });
+// mongoose.connect(process.env.DATABASE_URL)
+//
+// .then(() => {
+//     console.log("Connected to database!");
+//   })
+//   .catch(() => {
+//     console.log("Connection failed!");
+//   });
 
 
 
@@ -27,14 +27,14 @@ const reviewSaverRoutes = require('./routes/review_saver');
 const app = express();
 
 // Update existing db reviews every day at 8am
-cron.schedule("* 8 * * *", function() {
-  console.log("updating reviews:");
-  dbToucher.updateAll().then((result) => {
-    console.log(result);
-  }).catch(error => {
-    console.log(error);
-  });
-});
+// cron.schedule("* 8 * * *", function() {
+//   console.log("updating reviews:");
+//   dbToucher.updateAll().then((result) => {
+//     console.log(result);
+//   }).catch(error => {
+//     console.log(error);
+//   });
+// });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -54,6 +54,7 @@ app.use((req, res, next) => {
 
 app.use('/app-store-api', appStoreRoutes);
 app.use('/play-store-api', playStoreRoutes);
-app.use('/review-saver', reviewSaverRoutes);
+// only need these when using server
+// app.use('/review-saver', reviewSaverRoutes);
 
 module.exports = app;
