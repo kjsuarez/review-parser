@@ -231,15 +231,15 @@ export class AppComponent {
   }
 
   submitEmail(email) {
-    this.appService.sendEmail(email)
-    .subscribe((response: any) => {
-      if(response.status == 200) {
-        localStorage.setItem('email', email);
+    // this.appService.sendEmail(email)
+    // .subscribe((response: any) => {
+    //   if(response.status == 200) {
+    //     localStorage.setItem('email', email);
 
         this.getRelevantReviews(this.currentAppId, this.selectedRegion);
         this.sent_email = email
-      }
-    })
+    //   }
+    // })
   }
 
   validEmail(email) {

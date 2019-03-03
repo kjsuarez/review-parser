@@ -94,7 +94,8 @@ export class AppService {
     return this.httpClient.get(BACKEND_URL + 'app-store-api/review-breackdown/' + id, { params })
     .pipe(
       map((response: any) => {
-        this.saveAppStoreReviews(id).subscribe(response => { console.log(response) })
+        // for touching db
+        // this.saveAppStoreReviews(id).subscribe(response => { console.log(response) })
         return response.obj;
       })
     )
@@ -139,7 +140,8 @@ export class AppService {
     return this.httpClient.get(BACKEND_URL + 'play-store-api/review-breackdown/' + id, { params })
     .pipe(
       map((response: any) => {
-        this.savePlayStoreReviews(id).subscribe(response => { console.log(response) })
+        // for touching db
+        // this.savePlayStoreReviews(id).subscribe(response => { console.log(response) })
         return response.obj;
       })
     )
