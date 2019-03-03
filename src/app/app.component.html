@@ -1,23 +1,7 @@
 <form #keywordSearch="ngForm" ngNativeValidate class="container search-form">
   <div class="column-1">
-    <mat-form-field class="search-input">
-      <input
-        matInput
-        placeholder="app search"
-        type="text"
-        [(ngModel)]="searchKeyWord"
-        (keyup)="updateSearch(keywordSearch)"
-        name="searchKeyWord"
-        [matAutocomplete]="auto">
-
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let application of this.foundApps" [value]="option" (click)="doApplicationThings(application, selectedRegion)">
-            {{application.name}}
-          </mat-option>
-        </mat-autocomplete>
-
-    </mat-form-field>
-
+    <search-bar></search-bar>
+    
     <mat-spinner *ngIf="this.thinking"></mat-spinner>
 
     <div *ngIf="this.data_recieved" class="percentages">

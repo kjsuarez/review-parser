@@ -2,13 +2,16 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm, FormControl } from "@angular/forms";
 import { Subscription } from 'rxjs';
 import { AppService } from './app.service';
+import { ReviewService } from './review.service';
 import {PageEvent} from '@angular/material';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [ReviewService]
 })
 export class AppComponent {
   @ViewChild(MatPaginator) performancePaginator: MatPaginator;
@@ -71,7 +74,14 @@ export class AppComponent {
   emailCardVisible = false;
   relevantReviewsDirty = false;
 
-  constructor(private appService: AppService) {}
+  testyBoi = "shmoop";
+
+  constructor(private appService: AppService, private reviewService: ReviewService) {
+    reviewService.missionConfirmed$.subscribe(
+        response => {
+          this.testyBoi = response
+        });
+    }
 
   ngOnInit() {
 
@@ -107,43 +117,7 @@ export class AppComponent {
     this.viewablePerformanceReviews = this.relevantPreformanceReviews.slice((page.pageIndex*page.pageSize), (page.pageIndex*page.pageSize) + page.pageSize)
 
   }
-
-  doApplicationThings(application, region) {
-    this.setKeyWord(application.name);
-    this.currentAppId = application.id
-    this.getReviewStats(application.id, region);
-    if(this.sent_email){
-      this.getRelevantReviews(application.id, region);
-    }
-  }
-
-  setKeyWord(name){
-    this.searchKeyWord = name
-  }
-
-  updateSearch(form){
-    var keyword = form.value.searchKeyWord.trim()
-    if(keyword){
-      if(this.searchContext == "appStore"){
-        this.appService.getAppStoreApps(keyword, this.selectedRegion.code)
-        .subscribe(response => {
-          this.foundApps = response;
-        })
-        //*****//
-        // this.foundApps = this.appService.mockAppStoreApps(keyword)
-      }else{
-        this.appService.getPlayStoreApps(keyword, this.selectedRegion.code)
-        .subscribe(response => {
-          this.foundApps = response;
-        })
-      }
-
-    }else{
-      this.foundApps = []
-    }
-
-  }
-
+  
   getRelevantReviews(id, region){
     if(this.searchContext == "appStore"){
       this.appService.getRelevantAppStoreReviews(id, region.country)

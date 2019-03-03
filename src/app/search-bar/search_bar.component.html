@@ -1,0 +1,17 @@
+<mat-form-field class="search-input">
+  <input
+    matInput
+    placeholder="app search"
+    type="text"
+    [(ngModel)]="searchKeyWord"
+    (keyup)="updateSearch(searchKeyWord)"
+    name="searchKeyWord"
+    [matAutocomplete]="auto">
+
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let application of this.foundApps" [value]="option" (click)="doApplicationThings(application, selectedRegion)">
+        {{application.name}}
+      </mat-option>
+    </mat-autocomplete>
+
+</mat-form-field>
