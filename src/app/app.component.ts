@@ -28,14 +28,6 @@ export class AppComponent {
   pageSizeOptions: number[] = [5, 10, 25];
   pageSize = 5;
 
-  visibleKeywords = [
-    "battery", "crash", " load", "server",
-    "drain", " hang", "lag", "fps",
-    "temperature", "frame rate", "cpu", "gpu",
-    " heating", "freeze", "stutter", "resolution",
-    "performance", "responsive"
-  ]
-
   powerReviews = [];
   relevantPowerReviews = this.powerReviews
   viewablePowerReviews = this.relevantPowerReviews.slice(0, this.pageSize)
@@ -190,16 +182,8 @@ export class AppComponent {
     return arry
   }
 
-  percentOf(x, y) {
-    return ((x/y)*100).toFixed(2)
-  }
-
   filterReviewsByKeyword(reviews, keyword) {
     return reviews.filter(review => review.keywords.includes(keyword))
-  }
-
-  trim(text) {
-    return text.trim();
   }
 
   resetPaginator() {

@@ -5,22 +5,7 @@
     <review-stats></review-stats>
 
     <mat-spinner *ngIf="this.thinking"></mat-spinner>
-
-    <div *ngIf="this.data_recieved" class="details-data">
-      <h3>total reviews pulled: {{totalReviewsCollected}}</h3>
-      <h3> number of bad reviews (below 4 stars): {{badReviewCount}} ({{badReviewPercentage}}%)</h3>
-      <br>
-      <h3>keyword breakdown:</h3>
-
-      <mat-grid-list cols="4" rowHeight="4:1" class="minutiae">
-        <mat-grid-tile *ngFor="let keyword of visibleKeywords" (click)="selectRelevantReviews(keyword)" class="keyword-tile">
-          {{trim(keyword)}}: {{keywordStats[keyword]}} ({{percentOf(keywordStats[keyword], badReviewCount)}}%)
-        </mat-grid-tile>
-
-        <mat-grid-tile (click)="resetRelevantReviews()" class="reset-button"> reset </mat-grid-tile>
-      </mat-grid-list>
-    </div>
-
+    
     <button mat-button *ngIf="!emailCardVisible && !this.sent_email && data_recieved" (click)="toggleEmailCard()">Click here to learn more</button>
 
     <mat-card *ngIf="emailCardVisible && !this.sent_email && data_recieved" class="email-card">

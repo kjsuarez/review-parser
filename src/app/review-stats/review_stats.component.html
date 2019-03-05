@@ -10,3 +10,18 @@
       <h3>{{performanceCount}}/{{badReviewCount}}</h3>
   </div>
 </div>
+
+<div *ngIf="this.data_recieved" class="details-data">
+  <h3>total reviews pulled: {{totalReviewsCollected}}</h3>
+  <h3> number of bad reviews (below 4 stars): {{badReviewCount}} ({{badReviewPercentage}}%)</h3>
+  <br>
+  <h3>keyword breakdown:</h3>
+
+  <mat-grid-list cols="4" rowHeight="4:1" class="minutiae">
+    <mat-grid-tile *ngFor="let keyword of visibleKeywords" (click)="selectRelevantReviews(keyword)" class="keyword-tile">
+      {{trim(keyword)}}: {{keywordStats[keyword]}} ({{percentOf(keywordStats[keyword], badReviewCount)}}%)
+    </mat-grid-tile>
+
+    <mat-grid-tile (click)="resetRelevantReviews()" class="reset-button"> reset </mat-grid-tile>
+  </mat-grid-list>
+</div>

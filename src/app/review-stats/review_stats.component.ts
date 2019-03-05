@@ -25,6 +25,14 @@ export class ReviewStatsComponent {
   powerPercentage;
   thinking;
 
+  visibleKeywords = [
+    "battery", "crash", " load", "server",
+    "drain", " hang", "lag", "fps",
+    "temperature", "frame rate", "cpu", "gpu",
+    " heating", "freeze", "stutter", "resolution",
+    "performance", "responsive"
+  ]
+
   constructor(private appService: AppService, private reviewService: ReviewService) {
     reviewService.reviewStats$.subscribe(
       appInfo => {
@@ -78,4 +86,13 @@ export class ReviewStatsComponent {
       })
     }
   }
+
+  trim(text) {
+    return text.trim();
+  }
+
+  percentOf(x, y) {
+    return ((x/y)*100).toFixed(2)
+  }
+
 }
