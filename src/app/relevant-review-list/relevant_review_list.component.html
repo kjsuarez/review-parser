@@ -1,0 +1,57 @@
+<div *ngIf="data_recieved" class="reviews">
+  <div class="review-column-1">
+    <h3 *ngIf="powerReviews.length == 0 "> No bad reviews related to Power 👍 </h3>
+    <mat-paginator #powerPaginator
+                  *ngIf="relevantPowerReviews.length > 0"
+                  [length]="relevantPowerReviews.length"
+                  [pageSize]="pageSize"
+                  [pageSizeOptions]="pageSizeOptions"
+                  (page)="onPowerPage($event)"
+                  class="review-paginator">
+    </mat-paginator>
+
+    <div class="power-reviews">
+      <ul>
+        <li *ngFor="let review of viewablePowerReviews; index as i;" class="review-item">
+          <mat-icon *ngFor="let star of starArray(review.review.rating)" class=star-icon>star</mat-icon>
+          <p > {{review.review.content}} </p>
+          <div class="review-subtext">
+            <p *ngFor="let keyword of review.keywords" > {{keyword}} </p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="review-column-2">
+    <h3 *ngIf="performanceReviews.length == 0"> No bad reviews related to Preformance 👍 </h3>
+    <mat-paginator #performancePaginator
+                   *ngIf="relevantPreformanceReviews.length > 0"
+                   [length]="relevantPreformanceReviews.length"
+                   [pageSize]="pageSize"
+                   [pageSizeOptions]="pageSizeOptions"
+                   (page)="onPerformancePage($event)"
+                   class="review-paginator">
+    </mat-paginator>
+    <!-- <mat-paginator *ngIf="relevantPreformanceReviews.length > 0"
+                  [length]="relevantPreformanceReviews.length"
+                  [pageSize]="pageSize"
+                  [pageIndex]="performancePageIndex"
+                  [pageSizeOptions]="pageSizeOptions"
+                  (page)="onPerformancePage($event)"
+                  class="review-paginator">
+    </mat-paginator> -->
+
+    <div class="performance-reviews">
+      <ul>
+        <li *ngFor="let review of viewablePerformanceReviews; index as i;" class="review-item">
+          <mat-icon *ngFor="let star of starArray(review.review.rating)" class=star-icon>star</mat-icon>
+          <p > {{review.review.content}} </p>
+          <div class="review-subtext">
+            <p *ngFor="let keyword of review.keywords" > {{keyword}} </p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

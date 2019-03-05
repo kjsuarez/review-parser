@@ -9,8 +9,9 @@ import { AngularMaterialModule } from "./angular-material.module";
 import { StarRatingModule } from 'angular-star-rating';
 
 import { AppComponent } from './app.component';
-import { SearchBarComponent } from './search-bar/search_bar.component'
-import { ReviewStatsComponent } from './review-stats/review_stats.component'
+import { SearchBarComponent } from './search-bar/search_bar.component';
+import { ReviewStatsComponent } from './review-stats/review_stats.component';
+import { RelevantReviewListComponent } from './relevant-review-list/relevant_review_list.component';
 import { AppService } from './app.service';
 import { routing } from "./app.routing";
 
@@ -18,7 +19,8 @@ import { routing } from "./app.routing";
   declarations: [
     AppComponent,
     SearchBarComponent,
-    ReviewStatsComponent
+    ReviewStatsComponent,
+    RelevantReviewListComponent
   ],
   imports: [
     BrowserModule,

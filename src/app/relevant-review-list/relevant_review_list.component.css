@@ -1,0 +1,38 @@
+.reviews {
+  display: flex;
+}
+
+.review-column-1 {
+  min-width: 16em;
+}
+
+.review-column-2 {
+  min-width: 16em;
+}
+
+.review-paginator {
+  max-width: 20em;
+}
+
+.review-item {
+  display: block;
+  text-align: left;
+}
+
+.star-icon {
+    color: #ffe400;
+}
+/* Note: If you're using an SVG icon, you should make the class target the `<svg>` element */
+.star-icon svg {
+    fill: #ffe400;
+}
+
+.review-subtext {
+  display: flex;
+}
+
+.review-subtext * {
+  padding-right: 15px;
+  color: grey;
+  margin-top: 0;
+}

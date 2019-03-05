@@ -44,9 +44,8 @@ export class ReviewService {
     }
 
     this.thinkingIs(true);
-    
-    this.reviewStatsSource.next(appHash);
-    // this.getRelevantReviews(application.id, region);
+
+    this.reviewStatsSource.next(appHash);  
     this.relevantReviewsSource.next(appHash);
   }
 
