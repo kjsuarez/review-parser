@@ -1,0 +1,12 @@
+<div *ngIf="this.data_recieved" class="percentages">
+  <div class="percentage-column">
+    <h2>Bad reviews related <br> to power</h2>
+    <h2 class="big-number">{{powerPercentage}}%</h2>
+    <h3>{{powerCount}}/{{badReviewCount}}</h3>
+  </div>
+  <div class="percentage-column">
+      <h2>Bad reviews related <br> to performance</h2>
+      <h2 class="big-number">{{performancePercentage}}%</h2>
+      <h3>{{performanceCount}}/{{badReviewCount}}</h3>
+  </div>
+</div>

@@ -78,10 +78,15 @@ export class AppComponent {
 
   constructor(private appService: AppService, private reviewService: ReviewService) {
     reviewService.missionConfirmed$.subscribe(
-        response => {
-          this.testyBoi = response
-        });
-    }
+      response => {
+        this.testyBoi = response
+      }
+    );
+
+    reviewService.thinking$.subscribe(
+      response => { this.thinking = response }
+    )
+  }
 
   ngOnInit() {
 
@@ -117,7 +122,7 @@ export class AppComponent {
     this.viewablePerformanceReviews = this.relevantPreformanceReviews.slice((page.pageIndex*page.pageSize), (page.pageIndex*page.pageSize) + page.pageSize)
 
   }
-  
+
   getRelevantReviews(id, region){
     if(this.searchContext == "appStore"){
       this.appService.getRelevantAppStoreReviews(id, region.country)
@@ -161,48 +166,7 @@ export class AppComponent {
 
   }
 
-  getReviewStats(id, region){
-    this.badReviewPercentage = null;
-    this.performancePercentage = null;
-    this.powerPercentage = null;
-    this.data_recieved = false;
-    this.thinking = true;
-    if(this.searchContext == "appStore"){
-      this.appService.getAppStoreReviewStats(id)
-      .subscribe(response => {
-        this.keywordStats = response["keywordStats"]
-        this.totalReviewsCollected = response["totalReviewsCollected"];
-        this.badReviewCount = response["badReviewCount"];
-        this.badReviewPercentage = response["badReviewPercentage"];
-        this.performancePercentage = response["performancePercentage"];
-        this.powerPercentage = response["powerPercentage"];
-        this.performanceCount = response["performanceCount"];
-        this.powerCount = response["powerCount"];
-        this.thinking = false;
-        this.data_recieved = true
-      })
-      //********//
-      // var response = this.appService.mockAppStoreReviewStats(id)
-      // this.badReviewPercentage = response["badReviewPercentage"]
-      // this.performancePercentage = response["performancePercentage"];
-      // this.powerPercentage = response["powerPercentage"];
-      // this.thinking = false;
-    }else{
-      this.appService.getPlayStoreReviewStats(id, region.language)
-      .subscribe(response => {
-        this.keywordStats = response["keywordStats"]
-        this.totalReviewsCollected = response["totalReviewsCollected"];
-        this.badReviewCount = response["badReviewCount"];
-        this.badReviewPercentage = response["badReviewPercentage"]
-        this.performancePercentage = response["performancePercentage"];
-        this.powerPercentage = response["powerPercentage"];
-        this.performanceCount = response["performanceCount"];
-        this.powerCount = response["powerCount"];
-        this.thinking = false;
-        this.data_recieved = true
-      })
-    }
-  }
+
 
   submitEmail(email) {
     // this.appService.sendEmail(email)

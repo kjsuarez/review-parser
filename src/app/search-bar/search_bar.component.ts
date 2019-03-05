@@ -56,7 +56,7 @@ export class SearchBarComponent {
 
   doApplicationThings(application, region) {
     this.setKeyWord(application.name);
-    this.reviewService.doApplicationThings(application, region);
+    this.reviewService.doApplicationThings(application, region, this.searchContext);
   }
 
 }

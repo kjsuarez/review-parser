@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Subject }    from 'rxjs';
+import { AppService } from './app.service';
 
 @Injectable()
 export class ReviewService {
+
+  constructor(private appService: AppService) {}
 
   // Observable string sources
   private missionAnnouncedSource = new Subject<string>();
@@ -10,6 +13,7 @@ export class ReviewService {
 
   private reviewStatsSource = new Subject<any>();
   private relevantReviewsSource = new Subject<any>();
+  private thinkingSource = new Subject<boolean>();
 
   // Observable string streams
   missionAnnounced$ = this.missionAnnouncedSource.asObservable();
@@ -17,6 +21,7 @@ export class ReviewService {
 
   reviewStats$ = this.reviewStatsSource.asObservable();
   relevantReviews$ = this.relevantReviewsSource.asObservable();
+  thinking$ = this.thinkingSource.asObservable();
 
   // Service message commands
   announceMission(mission: string) {
@@ -27,15 +32,22 @@ export class ReviewService {
     this.missionConfirmedSource.next(astronaut);
   }
 
-  doApplicationThings(application, region) {
-    // this.currentAppId = application.id
-    // this.getReviewStats(application.id, region);
+  thinkingIs(bool) {
+    this.thinkingSource.next(bool);
+  }
+
+  doApplicationThings(application, region, context) {
     var appHash = {
       appId: application.id,
-      region: region
+      region: region,
+      context: context
     }
+
+    this.thinkingIs(true);
+    
     this.reviewStatsSource.next(appHash);
     // this.getRelevantReviews(application.id, region);
     this.relevantReviewsSource.next(appHash);
   }
+
 }

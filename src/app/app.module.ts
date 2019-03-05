@@ -10,13 +10,15 @@ import { StarRatingModule } from 'angular-star-rating';
 
 import { AppComponent } from './app.component';
 import { SearchBarComponent } from './search-bar/search_bar.component'
+import { ReviewStatsComponent } from './review-stats/review_stats.component'
 import { AppService } from './app.service';
 import { routing } from "./app.routing";
 
 @NgModule({
   declarations: [
     AppComponent,
-    SearchBarComponent
+    SearchBarComponent,
+    ReviewStatsComponent
   ],
   imports: [
     BrowserModule,
