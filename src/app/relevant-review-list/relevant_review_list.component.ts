@@ -61,6 +61,7 @@ export class RelevantReviewListComponent {
 
   getRelevantReviews(id, context, region){
     this.data_recieved = false;
+    console.log(context)
     if(context == "appStore"){
       this.appService.getRelevantAppStoreReviews(id, region.country)
       .subscribe(response => {

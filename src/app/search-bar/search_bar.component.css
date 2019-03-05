@@ -1,4 +1,15 @@
+.search {
+  display: flex;
+}
+
 .search-input {
   width: 100%;
   font-size: 200%;
+}
+
+.toggle-div{
+  font-size: 160%;
+  margin-top: 2em;
+  margin-bottom: 5px;
+  margin-inline-start: 1em;
 }

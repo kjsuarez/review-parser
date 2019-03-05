@@ -18,8 +18,17 @@ export class SearchBarComponent {
 
   searchKeyWord;
   searchContext = "appStore";
-  selectedRegion = {code: "us", country: "US", language: "en"};
   foundApps = [];
+  appStoreRegions = [
+    {code: "us", country: "US", language: "en"},
+    {code: "cn", country: "China", language: "zh-CN"},
+    {code: "gb", country: "UK", language: "en"},
+    {code: "kr", country: "South Korea", language: "ko-KR"},
+    {code: "fr", country: "France", language: "fr-FR"},
+    {code: "in", country: "India", language: "hi-IN"},
+    {code: "ru", country: "Russia", language: "ru-RU"}
+  ];
+  selectedRegion = {code: "us", country: "US", language: "en"};
 
   constructor(private appService: AppService, private reviewService: ReviewService) {}
 
@@ -59,4 +68,21 @@ export class SearchBarComponent {
     this.reviewService.doApplicationThings(application, region, this.searchContext);
   }
 
+  onChange(value){
+    this.cleanSlate();
+    if(value.checked === true){
+      this.searchContext = "playStore"
+    }else{
+      this.searchContext = "appStore"
+    }
+  }
+
+  cleanSlate(){
+    this.foundApps = [];
+    // this.performancePercentage = null;
+    // this.powerPercentage = null;
+    // this.badReviewPercentage = null;
+    this.searchKeyWord = null;
+    // this.data_recieved = false;
+  }
 }

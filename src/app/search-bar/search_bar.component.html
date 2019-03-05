@@ -1,17 +1,33 @@
-<mat-form-field class="search-input">
-  <input
-    matInput
-    placeholder="app search"
-    type="text"
-    [(ngModel)]="searchKeyWord"
-    (keyup)="updateSearch(searchKeyWord)"
-    name="searchKeyWord"
-    [matAutocomplete]="auto">
+<div class="search">
+  <mat-form-field class="search-input">
+    <input
+      matInput
+      placeholder="app search"
+      type="text"
+      [(ngModel)]="searchKeyWord"
+      (keyup)="updateSearch(searchKeyWord)"
+      name="searchKeyWord"
+      [matAutocomplete]="auto">
 
-    <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let application of this.foundApps" [value]="option" (click)="doApplicationThings(application, selectedRegion)">
-        {{application.name}}
-      </mat-option>
-    </mat-autocomplete>
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let application of this.foundApps" [value]="option" (click)="doApplicationThings(application, selectedRegion)">
+          {{application.name}}
+        </mat-option>
+      </mat-autocomplete>
 
-</mat-form-field>
+  </mat-form-field>
+
+  <div class="">
+    <div class="toggle-div">
+      app store <mat-slide-toggle (change)="onChange($event)"></mat-slide-toggle> play store
+    </div>
+
+    <mat-form-field>
+      <mat-select placeholder="region" [(ngModel)]="selectedRegion" name="region">
+        <mat-option *ngFor="let region of appStoreRegions" [value]="region">
+          {{region.country}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
