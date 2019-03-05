@@ -5,6 +5,7 @@
 .search-input {
   width: 100%;
   font-size: 200%;
+  min-width: 15em;
 }
 
 .toggle-div{
@@ -12,4 +13,5 @@
   margin-top: 2em;
   margin-bottom: 5px;
   margin-inline-start: 1em;
+  min-width: 12em;
 }

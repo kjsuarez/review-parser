@@ -19,7 +19,7 @@ var dbToucher = require('./db_toucher/db_toucher')
 //   });
 
 
-
+const rootRoute = require('./routes/app');
 const appStoreRoutes = require('./routes/app_store_api');
 const playStoreRoutes = require('./routes/play_store_api');
 const reviewSaverRoutes = require('./routes/review_saver');
@@ -51,6 +51,8 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+app.use('/', rootRoute);
 
 app.use('/app-store-api', appStoreRoutes);
 app.use('/play-store-api', playStoreRoutes);

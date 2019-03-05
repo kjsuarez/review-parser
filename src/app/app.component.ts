@@ -6,7 +6,6 @@ import { ReviewService } from './review.service';
 import {PageEvent} from '@angular/material';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,67 +14,31 @@ import {MatPaginator, MatTableDataSource} from '@angular/material';
 })
 export class AppComponent {
 
-
   title = 'review-parser';
-
-  foundApps = [];
-  reviews = [];
-  viewableReviews = [];
-
-  keywordStats;
-  totalReviewsCollected;
-  badReviewCount;
-  badReviewPercentage;
-  performanceCount;
-  powerCount;
-  performancePercentage;
-  powerPercentage;
-  userEmail;
+  server_status = 'unknown';
   thinking = false;
-  data_recieved = false;
-  sent_email = localStorage.getItem('email') || false
-  searchContext = "appStore";
-  currentAppId;
-  searchKeyWord;
-  breakdown;
+
+  sent_email = localStorage.getItem('email') || false;
   emailCardVisible = false;
 
-
-  testyBoi = "shmoop";
-
   constructor(private appService: AppService, private reviewService: ReviewService) {
-    reviewService.missionConfirmed$.subscribe(
-      response => {
-        this.testyBoi = response
-      }
-    );
-
     reviewService.thinking$.subscribe(
       response => { this.thinking = response }
-    )
+    );
   }
 
   ngOnInit() {
-
+    this.wakeServer()
   }
-  
-  // getReviews(id, region){
-  //   if(this.searchContext == "appStore"){
-  //     this.appService.getAppStoreReviews(id, region.country)
-  //     .subscribe(response => {
-  //       this.reviews = response;
-  //       this.viewableReviews = this.reviews.slice(0, this.pageSize)
-  //     })
-  //   }else{
-  //     // I dont think this exists on the front end yet
-  //     this.appService.getPlayStoreReviews(id, region.country)
-  //     .subscribe(response => {
-  //       this.reviews = response;
-  //       this.viewableReviews = this.reviews.slice(0, this.pageSize)
-  //     })
-  //   }
-  //
-  // }
+
+  wakeServer() {
+    this.appService.wakeServer()
+    .subscribe(
+      res => {
+        this.server_status = res;
+      }
+    )
+  }
 
   // submitEmail(email) {
   //   this.appService.sendEmail(email)

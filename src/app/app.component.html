@@ -1,9 +1,21 @@
-<form #keywordSearch="ngForm" ngNativeValidate class="container search-form">
+<mat-spinner
+*ngIf="server_status == 'unknown'"
+class="waker"
+[diameter]="250">
+</mat-spinner>
+
+<h1 *ngIf="server_status == 'error'"> Something's wrong with the server 😬</h1>
+
+<form #keywordSearch="ngForm"
+ngNativeValidate
+*ngIf="server_status == 'awake'"
+class="container search-form">
+
   <div class="column-1">
     <search-bar></search-bar>
     <review-stats></review-stats>
     <relevant-review-list></relevant-review-list>
-    <mat-spinner *ngIf="this.thinking"></mat-spinner>
+    <mat-spinner *ngIf="this.thinking" class="thinker"></mat-spinner>
 
     <!-- <button mat-button *ngIf="!emailCardVisible && !this.sent_email && data_recieved" (click)="toggleEmailCard()">Click here to learn more</button>
 
@@ -13,9 +25,4 @@
     </mat-card> -->
 
   </div>
-
-  <div class="column-2">
-    
-  </div>
-
 </form>

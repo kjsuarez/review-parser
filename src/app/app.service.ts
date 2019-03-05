@@ -3,6 +3,7 @@ import { Http, Response, Headers } from '@angular/http';
 import { Injectable, EventEmitter } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { map } from "rxjs/operators";
+import { catchError } from 'rxjs/operators';
 
 import { environment } from '../environments/environment';
 const BACKEND_URL = environment.apiUrl + "/";
@@ -150,5 +151,23 @@ export class AppService {
   sendEmail(email) {
     const formUrl = HS_FORMS_URL;
     return this.http.post(formUrl, {fields: [{ name: "email", value: email}]})
+  }
+
+  wakeServer() {
+    return this.httpClient.get(BACKEND_URL)
+    .pipe(
+      map((response: any) => {
+        return "awake";
+      }),
+      catchError((response: any) => {
+        console.log("error touching backend:")
+        console.log(response)
+        if(response.status >= 400 && response.status < 500) {
+          return of("awake")
+        } else {
+          return of('error')
+        }
+      })
+    )
   }
 }

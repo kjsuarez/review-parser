@@ -1,6 +1,6 @@
-.container{
-  display: flex;
-  text-align: center;
+
+
+* {
   font-family: Roboto;
 }
 
@@ -10,15 +10,19 @@
   width: 100%;
 }
 
-.column-2 {
+.thinker {
+  margin-left: 12em;
+}
 
+.waker {
+  margin: auto;
+  margin-top: 10em;
 }
 
 .search-form {
   text-align: center;
   font-family: Roboto;
 }
-
 
 .email-card {
   display: flex;
