@@ -95,4 +95,12 @@ export class ReviewStatsComponent {
     return ((x/y)*100).toFixed(2)
   }
 
+  resetRelevantReviews() {
+    this.reviewService.resetRelevantReviews();
+  }
+
+  selectRelevantReviews(keyword) {
+    this.reviewService.selectRelevantReviews(keyword);
+  }
+
 }

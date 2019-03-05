@@ -14,6 +14,8 @@ export class ReviewService {
   private reviewStatsSource = new Subject<any>();
   private relevantReviewsSource = new Subject<any>();
   private thinkingSource = new Subject<boolean>();
+  private resetReviewSource = new Subject<any>();
+  private relevantReviewsSelectionSource = new Subject<string>();
 
   // Observable string streams
   missionAnnounced$ = this.missionAnnouncedSource.asObservable();
@@ -22,6 +24,8 @@ export class ReviewService {
   reviewStats$ = this.reviewStatsSource.asObservable();
   relevantReviews$ = this.relevantReviewsSource.asObservable();
   thinking$ = this.thinkingSource.asObservable();
+  resetReviews$ = this.resetReviewSource.asObservable();
+  relevantReviewsSelection$ = this.relevantReviewsSelectionSource.asObservable();
 
   // Service message commands
   announceMission(mission: string) {
@@ -45,8 +49,16 @@ export class ReviewService {
 
     this.thinkingIs(true);
 
-    this.reviewStatsSource.next(appHash);  
+    this.reviewStatsSource.next(appHash);
     this.relevantReviewsSource.next(appHash);
+  }
+
+  resetRelevantReviews() {
+    this.resetReviewSource.next();
+  }
+
+  selectRelevantReviews(keyword) {
+    this.relevantReviewsSelectionSource.next(keyword);
   }
 
 }

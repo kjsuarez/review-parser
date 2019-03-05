@@ -39,6 +39,20 @@ export class RelevantReviewListComponent {
         this.getRelevantReviews(appInfo.appId, appInfo.context, appInfo.region);
       }
     );
+
+    reviewService.resetReviews$.subscribe(
+      response => {
+        this.resetRelevantReviews();
+      }
+    );
+
+    reviewService.relevantReviewsSelection$.subscribe(
+      keyword => {
+        this.selectRelevantReviews(keyword);
+      }
+    );
+
+
   }
 
   ngOnInit() {
@@ -48,7 +62,6 @@ export class RelevantReviewListComponent {
   getRelevantReviews(id, context, region){
     this.data_recieved = false;
     if(context == "appStore"){
-      console.log("look at me")
       this.appService.getRelevantAppStoreReviews(id, region.country)
       .subscribe(response => {
 
@@ -87,6 +100,11 @@ export class RelevantReviewListComponent {
   }
 
   onPowerPage(page){
+    if(page.pageIndex*page.pageSize > page.length){
+      this.powerPageIndex = 0;
+      page.pageIndex = 0
+    }
+    // this.relevantReviewsDirty = true;
     this.viewablePowerReviews = this.relevantPowerReviews.slice(page.pageIndex, page.pageIndex + page.pageSize)
   }
 
@@ -95,6 +113,7 @@ export class RelevantReviewListComponent {
       this.performancePageIndex = 0;
       page.pageIndex = 0
     }
+    // this.relevantReviewsDirty = true;
     this.viewablePerformanceReviews = this.relevantPreformanceReviews.slice((page.pageIndex*page.pageSize), (page.pageIndex*page.pageSize) + page.pageSize)
   }
 
